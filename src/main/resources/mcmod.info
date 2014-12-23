@@ -1,0 +1,16 @@
+[
+{
+  "modid": "archcraft",
+  "name": "ArchCraft",
+  "description": "Bringing Architecture To Minecraft.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["pkimbrel", "jshwa86"],
+  "credits": "The Forge and FML guys, and Mojang for making Minecraft",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
