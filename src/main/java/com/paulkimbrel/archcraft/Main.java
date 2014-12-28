@@ -24,6 +24,13 @@ public class Main {
     public static final String CLIENT_PROXY="com.paulkimbrel.archcraft.proxy.ClientProxy";
     public static final String SERVER_PROXY="com.paulkimbrel.archcraft.proxy.ServerProxy";
     
+    public static final int GUI_BUILDER = 0;
+    
+    public static final int META_SOUTH = 0;
+    public static final int META_WEST = 1;
+    public static final int META_NORTH = 2;
+    public static final int META_EAST = 3;
+    
     @Instance
     public static Main instance = new Main();
 
@@ -59,7 +66,7 @@ public class Main {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getTabIconItem() {
-	    return ModItems.squareAndCompass;
+	    return AllItems.squareAndCompass;
 	}
     };
 }

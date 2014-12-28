@@ -1,7 +1,8 @@
 package com.paulkimbrel.archcraft.proxy;
 
-import com.paulkimbrel.archcraft.ModBlocks;
-import com.paulkimbrel.archcraft.ModItems;
+import com.paulkimbrel.archcraft.AllBlocks;
+import com.paulkimbrel.archcraft.AllGuis;
+import com.paulkimbrel.archcraft.AllItems;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -9,8 +10,9 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public class CommonProxy {
     public void preInit(FMLPreInitializationEvent e) {
-	ModItems.init();
-	ModBlocks.init();
+	AllItems.init();
+	AllBlocks.init();
+	new AllGuis();
     }
 
     public void init(FMLInitializationEvent e) {

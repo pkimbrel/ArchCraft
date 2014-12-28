@@ -12,9 +12,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ModBlocks {
+public class AllBlocks {
     public static Block builder;
-
+    
     public static final void init() {
 	builder = new Builder("builder", Material.cloth);
 	GameRegistry.registerBlock(builder, "builder");
