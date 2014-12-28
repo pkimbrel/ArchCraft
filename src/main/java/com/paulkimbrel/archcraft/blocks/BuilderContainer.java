@@ -1,5 +1,10 @@
 package com.paulkimbrel.archcraft.blocks;
 
+import com.paulkimbrel.archcraft.messaging.Command;
+
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -20,7 +25,7 @@ public class BuilderContainer extends Container {
 		addSlotToContainer(new Slot(builderEntity, j + i * 3, 62 + j * 18, 17 + i * 18));
 	    }
 	}
-	
+
 	// commonly used vanilla code that adds the player's inventory
 	bindPlayerInventory(player);
     }

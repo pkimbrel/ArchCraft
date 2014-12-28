@@ -21,8 +21,12 @@ import net.minecraft.world.World;
 import com.paulkimbrel.archcraft.Compute;
 import com.paulkimbrel.archcraft.Main;
 import com.paulkimbrel.archcraft.AllItems;
+import com.paulkimbrel.archcraft.messaging.Command;
 
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
 public class Builder extends BlockContainer {
     public IIcon[] icons = new IIcon[6];
@@ -140,4 +144,5 @@ public class Builder extends BlockContainer {
 	    }
 	}
     }
+    
 }

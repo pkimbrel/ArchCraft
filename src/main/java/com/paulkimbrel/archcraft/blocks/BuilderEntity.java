@@ -10,8 +10,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import com.paulkimbrel.archcraft.Main;
+import com.paulkimbrel.archcraft.messaging.Command;
+import com.paulkimbrel.archcraft.messaging.ICommand;
 
-public class BuilderEntity extends TileEntity implements IInventory {
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import cpw.mods.fml.relauncher.Side;
+
+public class BuilderEntity extends TileEntity implements IInventory, ICommand {
     private World world;
     private int metadata;
     private String localizedDisplayName;
@@ -24,6 +31,13 @@ public class BuilderEntity extends TileEntity implements IInventory {
 	this.metadata = metadata;
 	this.inventory = new ItemStack[9];
 	
+        // Open a channel to recieve the GUI commands
+	//Main.network.registerMessage(Handler.class, MessageCommand.class, Main.MSG_BUILDER, Side.SERVER);
+    }
+    
+    @Override
+    public void executeCommand(String command) {
+	System.out.println("You got here, buddy");
     }
 
     public void setGuiDisplayName(String localizedDisplayName) {
