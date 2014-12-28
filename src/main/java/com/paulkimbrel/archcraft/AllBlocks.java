@@ -7,6 +7,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
 import com.paulkimbrel.archcraft.blocks.Builder;
+import com.paulkimbrel.archcraft.blocks.BuilderEntity;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -18,6 +19,7 @@ public class AllBlocks {
     public static final void init() {
 	builder = new Builder("builder", Material.cloth);
 	GameRegistry.registerBlock(builder, "builder");
+	GameRegistry.registerTileEntity(BuilderEntity.class, "builderEntity");
     }
 
 }

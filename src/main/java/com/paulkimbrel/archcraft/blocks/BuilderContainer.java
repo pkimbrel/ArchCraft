@@ -20,7 +20,7 @@ public class BuilderContainer extends Container {
 		addSlotToContainer(new Slot(builderEntity, j + i * 3, 62 + j * 18, 17 + i * 18));
 	    }
 	}
-
+	
 	// commonly used vanilla code that adds the player's inventory
 	bindPlayerInventory(player);
     }

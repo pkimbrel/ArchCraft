@@ -22,7 +22,8 @@ public class BuilderEntity extends TileEntity implements IInventory {
 	super();
 	this.world = world;
 	this.metadata = metadata;
-	this.inventory = new ItemStack[16];
+	this.inventory = new ItemStack[9];
+	
     }
 
     public void setGuiDisplayName(String localizedDisplayName) {
@@ -137,4 +138,5 @@ public class BuilderEntity extends TileEntity implements IInventory {
 	}
 	tagCompound.setTag("Inventory", itemList);
     }
+    
 }

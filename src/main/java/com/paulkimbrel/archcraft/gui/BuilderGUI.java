@@ -1,8 +1,10 @@
 package com.paulkimbrel.archcraft.gui;
 
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
@@ -15,17 +17,31 @@ import com.paulkimbrel.archcraft.blocks.BuilderEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
 public class BuilderGUI extends GuiContainer {
     public BuilderGUI(InventoryPlayer inventoryPlayer, BuilderEntity tileEntity) {
 	super(new BuilderContainer(inventoryPlayer, tileEntity));
+    }
+    
+    @Override
+    public void initGui() {
+        super.initGui();
+        
+        buttonList.add(new GuiButton(1,  10, 40, 32, 16, "Go"));
+    }
+    
+    @Override
+    protected void actionPerformed(GuiButton button) {
+        switch (button.id) {
+            case 0:
+        	break;
+        }
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int param1, int param2) {
 	// draw text and stuff here
 	// the parameters for drawString are: string, x, y, color
-	fontRendererObj.drawString("Builder", 8, 6, 4210752);
+	fontRendererObj.drawString(StatCollector.translateToLocal("tile.builder.name"), 8, 6, 4210752);
 	// draws "Inventory" or your regional equivalent
 	fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, 4210752);
     }
