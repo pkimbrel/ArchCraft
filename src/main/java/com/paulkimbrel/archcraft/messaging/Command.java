@@ -8,6 +8,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
 public class Command implements IMessage {
     public String command = "";
+    public int dimension = 0;
     public int x = 0;
     public int y = 0;
     public int z = 0;
@@ -15,8 +16,9 @@ public class Command implements IMessage {
     public Command() {
     }
 
-    public Command(int x, int y, int z, String command) {
+    public Command(int dimension, int x, int y, int z, String command) {
 	this.command = command;
+	this.dimension = dimension;
 	this.x = x;
 	this.y = y;
 	this.z = z;
@@ -27,11 +29,12 @@ public class Command implements IMessage {
 	String rawCommand = ByteBufUtils.readUTF8String(buf);
 	System.out.println("rawCommand: " + rawCommand);
 	String[] parse = rawCommand.split(":");
-	if (parse.length == 4) {
-	    x = Integer.parseInt(parse[0]);
-	    y = Integer.parseInt(parse[1]);
-	    z = Integer.parseInt(parse[2]);
-	    command = parse[3];
+	if (parse.length == 5) {
+	    dimension = Integer.parseInt(parse[0]);
+	    x = Integer.parseInt(parse[1]);
+	    y = Integer.parseInt(parse[2]);
+	    z = Integer.parseInt(parse[3]);
+	    command = parse[4];
 	} else {
 	    command = parse[0];
 	}
@@ -39,7 +42,7 @@ public class Command implements IMessage {
 
     @Override
     public void toBytes(ByteBuf buf) {
-	ByteBufUtils.writeUTF8String(buf, x + ":" + y + ":" + z + ":" + command);
+	ByteBufUtils.writeUTF8String(buf, dimension + ":" + x + ":" + y + ":" + z + ":" + command);
     }
 
 }

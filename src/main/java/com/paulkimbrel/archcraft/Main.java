@@ -39,6 +39,11 @@ public class Main {
     public static final int META_WEST = 1;
     public static final int META_NORTH = 2;
     public static final int META_EAST = 3;
+    
+    public static final int BLOCK_SOUTH = 3;
+    public static final int BLOCK_WEST = 4;
+    public static final int BLOCK_NORTH = 2;
+    public static final int BLOCK_EAST = 5;
 
     @Instance
     public static Main instance = new Main();

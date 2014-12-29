@@ -5,6 +5,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.DimensionManager;
 
 import org.lwjgl.opengl.GL11;
 
@@ -39,7 +40,8 @@ public class BuilderGUI extends GuiContainer {
     protected void actionPerformed(GuiButton button) {
 	switch (button.id) {
 	    case 1:
-		Main.network.sendToServer(new Command(tileEntity.xCoord,
+		Main.network.sendToServer(new Command(tileEntity.getWorldObj().provider.dimensionId,
+			tileEntity.xCoord,
 			tileEntity.yCoord,
 			tileEntity.zCoord,
 			"foobar"));

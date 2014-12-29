@@ -22,14 +22,16 @@ import com.paulkimbrel.archcraft.Compute;
 import com.paulkimbrel.archcraft.Main;
 import com.paulkimbrel.archcraft.AllItems;
 import com.paulkimbrel.archcraft.messaging.Command;
+import com.paulkimbrel.archcraft.messaging.ICommand;
 
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
-public class Builder extends BlockContainer {
+public class Builder extends BlockContainer implements ICommand {
     public IIcon[] icons = new IIcon[6];
+    public IIcon directionIcon;
 
     public Builder(String unlocalizedName, Material material) {
 	super(material);
@@ -64,11 +66,16 @@ public class Builder extends BlockContainer {
 		    break;
 	    }
 	}
+	directionIcon = reg.registerIcon(this.textureName + "-forward");
     }
 
     @Override
     public IIcon getIcon(int side, int meta) {
-	return this.icons[side];
+	if (Compute.sameDirection(side, meta)) {
+	    return this.directionIcon;
+	} else {
+	    return this.icons[side];
+	}
     }
 
     @Override
@@ -88,6 +95,11 @@ public class Builder extends BlockContainer {
 	    player.openGui(Main.instance, Main.GUI_BUILDER, world, x, y, z);
 	    return true;
 	}
+    }
+
+    @Override
+    public void executeCommand(String command) {
+
     }
 
     @Override
@@ -116,7 +128,7 @@ public class Builder extends BlockContainer {
 	if (!(tileEntity instanceof IInventory)) {
 	    return;
 	}
-	
+
 	IInventory inventory = (IInventory) tileEntity;
 
 	for (int i = 0; i < inventory.getSizeInventory(); i++) {
@@ -144,5 +156,5 @@ public class Builder extends BlockContainer {
 	    }
 	}
     }
-    
+
 }

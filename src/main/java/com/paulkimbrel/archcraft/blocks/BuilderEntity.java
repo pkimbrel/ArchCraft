@@ -18,7 +18,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 
-public class BuilderEntity extends TileEntity implements IInventory, ICommand {
+public class BuilderEntity extends TileEntity implements IInventory {
     private World world;
     private int metadata;
     private String localizedDisplayName;
@@ -30,16 +30,8 @@ public class BuilderEntity extends TileEntity implements IInventory, ICommand {
 	this.world = world;
 	this.metadata = metadata;
 	this.inventory = new ItemStack[9];
-	
-        // Open a channel to recieve the GUI commands
-	//Main.network.registerMessage(Handler.class, MessageCommand.class, Main.MSG_BUILDER, Side.SERVER);
     }
     
-    @Override
-    public void executeCommand(String command) {
-	System.out.println("You got here, buddy");
-    }
-
     public void setGuiDisplayName(String localizedDisplayName) {
 	this.localizedDisplayName = localizedDisplayName;
     }
