@@ -33,7 +33,8 @@ public class BuilderGUI extends GuiContainer {
 	super.initGui();
 	rootX = (width - xSize) / 2;
 	rootY = (height - ySize) / 2;
-	buttonList.add(new GuiButton(1, rootX + 12, rootY + 33, 40, 20, "Go"));
+	buttonList.add(new GuiButton(1, rootX + 12, rootY + 23, 40, 20, "Test"));
+	buttonList.add(new GuiButton(2, rootX + 12, rootY + 43, 40, 20, "Clear"));
     }
 
     @Override
@@ -44,7 +45,15 @@ public class BuilderGUI extends GuiContainer {
 			tileEntity.xCoord,
 			tileEntity.yCoord,
 			tileEntity.zCoord,
-			"foobar"));
+			"testPattern1"));
+		
+		break;
+	    case 2:
+		Main.network.sendToServer(new Command(tileEntity.getWorldObj().provider.dimensionId,
+			tileEntity.xCoord,
+			tileEntity.yCoord,
+			tileEntity.zCoord,
+			"clearTestPattern1"));
 
 		break;
 	}

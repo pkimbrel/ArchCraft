@@ -1,6 +1,7 @@
 package com.paulkimbrel.archcraft.messaging;
 
 import net.minecraft.block.Block;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -21,7 +22,7 @@ public class CommandHandler implements IMessageHandler<Command, IMessage> {
 	if (world != null) {
 	    Block block = world.getBlock(message.x, message.y, message.z);
 	    if ((block != null) && block instanceof ICommand) {
-		((ICommand) block).executeCommand(message.command);
+		((ICommand) block).executeCommand((World) world, message.x, message.y, message.z, message.command);
 	    }
 	}
 	return null; // no response in this case

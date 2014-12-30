@@ -33,6 +33,66 @@ public class Builder extends BlockContainer implements ICommand {
     public IIcon[] icons = new IIcon[6];
     public IIcon directionIcon;
 
+    public static String[][] testPattern1 = new String[][] {
+	    { "*********",
+		    "*       *",
+		    "*       *",
+		    "*       *",
+		    "        *",
+		    "*       *",
+		    "*       *",
+		    "*       *",
+		    "*********" },
+
+	    { "*********",
+		    "*       *",
+		    "*       *",
+		    "*       *",
+		    "        *",
+		    "*       *",
+		    "*       *",
+		    "*       *",
+		    "*********" },
+	    { "*********",
+		    "*       *",
+		    "*       *",
+		    "*       *",
+		    "*       *",
+		    "*       *",
+		    "*       *",
+		    "*       *",
+		    "*********" },
+
+	    { "*********",
+		    "*       *",
+		    "*       *",
+		    "*       *",
+		    "*       *",
+		    "*       *",
+		    "*       *",
+		    "*       *",
+		    "*********" },
+	    { "*********",
+		    "*       *",
+		    "*       *",
+		    "*       *",
+		    "*       *",
+		    "*       *",
+		    "*       *",
+		    "*       *",
+		    "*********" },
+
+	    { "*********",
+		    "*********",
+		    "**  *  **",
+		    "**  *  **",
+		    "*********",
+		    "**  *  **",
+		    "**  *  **",
+		    "*********",
+		    "*********" },
+    };
+
     public Builder(String unlocalizedName, Material material) {
 	super(material);
 
@@ -98,8 +158,58 @@ public class Builder extends BlockContainer implements ICommand {
     }
 
     @Override
-    public void executeCommand(String command) {
+    public void executeCommand(World world, int x, int y, int z, String command) {
+	if (command.equals("testPattern1")) {
+	    buildTestPattern1(world, x, y, z);
+	} else if (command.equals("clearTestPattern1")) {
+	    clearTestPattern1(world, x, y, z);
+	}
+    }
 
+    private void clearTestPattern1(World world, int x, int y, int z) {
+	int direction = world.getBlockMetadata(x, y, z);
+
+	for (int py = 0; py < testPattern1.length; py++) {
+	    String[] level = testPattern1[py];
+	    for (int pz = 0; pz < level.length; pz++) {
+		String row = testPattern1[py][pz];
+		for (int px = 0; px < row.length(); px++) {
+		    if (direction == Main.META_EAST) {
+			world.setBlock(x + 1 + px, y + py, z + pz, Blocks.air);
+		    } else if (direction == Main.META_SOUTH) {
+			world.setBlock(x - pz, y + py, z + px + 1, Blocks.air);
+		    } else if (direction == Main.META_WEST) {
+			world.setBlock(x - px - 1, y + py, z - pz, Blocks.air);
+		    } else {
+			world.setBlock(x + pz, y + py, z - px - 1, Blocks.air);
+		    }
+		}
+	    }
+	}
+    }
+
+    private void buildTestPattern1(World world, int x, int y, int z) {
+	int direction = world.getBlockMetadata(x, y, z);
+
+	for (int py = 0; py < testPattern1.length; py++) {
+	    String[] level = testPattern1[py];
+	    for (int pz = 0; pz < level.length; pz++) {
+		String row = testPattern1[py][pz];
+		for (int px = 0; px < row.length(); px++) {
+		    if (testPattern1[py][pz].charAt(px) == '*') {
+			if (direction == Main.META_EAST) {
+			    world.setBlock(x + 1 + px, y + py, z + pz, Blocks.cobblestone);
+			} else if (direction == Main.META_SOUTH) {
+			    world.setBlock(x - pz, y + py, z + px + 1, Blocks.cobblestone);
+			} else if (direction == Main.META_WEST) {
+			    world.setBlock(x - px - 1, y + py, z - pz, Blocks.cobblestone);
+			} else {
+			    world.setBlock(x + pz, y + py, z - px - 1, Blocks.cobblestone);
+			}
+		    }
+		}
+	    }
+	}
     }
 
     @Override
@@ -109,7 +219,12 @@ public class Builder extends BlockContainer implements ICommand {
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
+    public void onBlockPlacedBy(World world,
+	    int x,
+	    int y,
+	    int z,
+	    EntityLivingBase entity,
+	    ItemStack itemStack) {
 	world.setBlockMetadataWithNotify(x, y, z, Compute.computeDirection(entity), 2);
 	if (itemStack.hasDisplayName()) {
 	    ((BuilderEntity) world.getTileEntity(x, y, z)).setGuiDisplayName(itemStack.getDisplayName());
@@ -139,12 +254,17 @@ public class Builder extends BlockContainer implements ICommand {
 		float ry = rand.nextFloat() * 0.8F + 0.1F;
 		float rz = rand.nextFloat() * 0.8F + 0.1F;
 
-		EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(item.getItem(),
-			item.stackSize,
-			item.getItemDamage()));
+		EntityItem entityItem = new EntityItem(world,
+			x + rx,
+			y + ry,
+			z + rz,
+			new ItemStack(item.getItem(),
+				item.stackSize,
+				item.getItemDamage()));
 
 		if (item.hasTagCompound()) {
-		    entityItem.getEntityItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
+		    entityItem.getEntityItem()
+			      .setTagCompound((NBTTagCompound) item.getTagCompound().copy());
 		}
 
 		float factor = 0.05F;
