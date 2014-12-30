@@ -34,11 +34,20 @@ public class Builder extends BlockContainer implements ICommand {
     public IIcon directionIcon;
 
     public static String[][] testPattern1 = new String[][] {
+	    { "@@@@@@@@@",
+		    "@@@@@@@@@",
+		    "@@@@@@@@@",
+		    "@@@@@@@@@",
+		    "@@@@@@@@@",
+		    "@@@@@@@@@",
+		    "@@@@@@@@@",
+		    "@@@@@@@@@",
+		    "@@@@@@@@@" },
 	    { "*********",
 		    "*       *",
 		    "*       *",
 		    "*       *",
-		    "        *",
+		    "!       *",
 		    "*       *",
 		    "*       *",
 		    "*       *",
@@ -48,7 +57,7 @@ public class Builder extends BlockContainer implements ICommand {
 		    "*       *",
 		    "*       *",
 		    "*       *",
-		    "        *",
+		    "$       *",
 		    "*       *",
 		    "*       *",
 		    "*       *",
@@ -84,11 +93,11 @@ public class Builder extends BlockContainer implements ICommand {
 
 	    { "*********",
 		    "*********",
-		    "**  *  **",
-		    "**  *  **",
+		    "**##*##**",
+		    "**##*##**",
 		    "*********",
-		    "**  *  **",
-		    "**  *  **",
+		    "**##*##**",
+		    "**##*##**",
 		    "*********",
 		    "*********" },
     };
@@ -101,7 +110,7 @@ public class Builder extends BlockContainer implements ICommand {
 	this.setCreativeTab(Main.creativeTab);
 	this.setHardness(3.5F);
 	this.setResistance(6.0F);
-	this.setLightLevel(0.5F);
+	this.setLightLevel(0.8F);
 	this.setHarvestLevel("pickaxe", 3);
 	this.setStepSound(soundTypeMetal);
     }
@@ -175,13 +184,13 @@ public class Builder extends BlockContainer implements ICommand {
 		String row = testPattern1[py][pz];
 		for (int px = 0; px < row.length(); px++) {
 		    if (direction == Main.META_EAST) {
-			world.setBlock(x + 1 + px, y + py, z + pz, Blocks.air);
+			world.setBlock(x + 1 + px, y + py - 1, z + pz, Blocks.air);
 		    } else if (direction == Main.META_SOUTH) {
-			world.setBlock(x - pz, y + py, z + px + 1, Blocks.air);
+			world.setBlock(x - pz, y + py - 1, z + px + 1, Blocks.air);
 		    } else if (direction == Main.META_WEST) {
-			world.setBlock(x - px - 1, y + py, z - pz, Blocks.air);
+			world.setBlock(x - px - 1, y + py - 1, z - pz, Blocks.air);
 		    } else {
-			world.setBlock(x + pz, y + py, z - px - 1, Blocks.air);
+			world.setBlock(x + pz, y + py - 1, z - px - 1, Blocks.air);
 		    }
 		}
 	    }
@@ -196,16 +205,45 @@ public class Builder extends BlockContainer implements ICommand {
 	    for (int pz = 0; pz < level.length; pz++) {
 		String row = testPattern1[py][pz];
 		for (int px = 0; px < row.length(); px++) {
+		    Block block;
+		    int metaData = -1;
 		    if (testPattern1[py][pz].charAt(px) == '*') {
-			if (direction == Main.META_EAST) {
-			    world.setBlock(x + 1 + px, y + py, z + pz, Blocks.cobblestone);
-			} else if (direction == Main.META_SOUTH) {
-			    world.setBlock(x - pz, y + py, z + px + 1, Blocks.cobblestone);
-			} else if (direction == Main.META_WEST) {
-			    world.setBlock(x - px - 1, y + py, z - pz, Blocks.cobblestone);
-			} else {
-			    world.setBlock(x + pz, y + py, z - px - 1, Blocks.cobblestone);
-			}
+			block = Blocks.cobblestone;
+		    } else if (testPattern1[py][pz].charAt(px) == '#') {
+			block = Blocks.glass;
+		    } else if (testPattern1[py][pz].charAt(px) == '@') {
+			block = Blocks.gold_block;
+		    } else if (testPattern1[py][pz].charAt(px) == '!') {
+			block = Blocks.wooden_door;
+			metaData = 3;
+		    } else if (testPattern1[py][pz].charAt(px) == '$') {
+			block = Blocks.wooden_door;
+			metaData = 8;
+		    } else {
+			block = Blocks.air;
+		    }
+		    int bx, by, bz;
+		    if (direction == Main.META_EAST) {
+			bx = x + 1 + px;
+			by = y + py - 1;
+			bz = z + pz;
+		    } else if (direction == Main.META_SOUTH) {
+			bx = x - pz;
+			by = y + py - 1;
+			bz = z + px + 1;
+		    } else if (direction == Main.META_WEST) {
+			bx = x - px - 1;
+			by = y + py - 1;
+			bz = z - pz;
+		    } else {
+			bx = x + pz;
+			by = y + py - 1;
+			bz = z - px - 1;
+		    }
+		    if (metaData >= 0) {
+			world.setBlock(x, y, z, block, metaData, 2);
+		    } else {
+			world.setBlock(bx, by, bz, block);
 		    }
 		}
 	    }
