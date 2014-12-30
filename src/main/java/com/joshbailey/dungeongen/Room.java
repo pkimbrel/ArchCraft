@@ -44,7 +44,7 @@ public class Room {
 	private TwoDimensionalCoordinate topLeftCoordinate = null;
 	public  TwoDimensionalCoordinate getTopLeftCoordinate(){
 		if(topLeftCoordinate == null){
-			topLeftCoordinate = new TwoDimensionalCoordinate(this.getStartingLocation().getX(), this.getStartingLocation().getY()+this.getSize_y());
+			topLeftCoordinate = new TwoDimensionalCoordinate(this.getStartingLocation().getX(), this.getStartingLocation().getY()+(this.getSize_y()-1));
 		}
 		return topLeftCoordinate;
 	}
@@ -58,14 +58,14 @@ public class Room {
 	private TwoDimensionalCoordinate topRightCoordinate = null;
 	public  TwoDimensionalCoordinate getTopRightCoordinate(){
 		if(topRightCoordinate == null){
-			topRightCoordinate = new TwoDimensionalCoordinate(this.getStartingLocation().getX()+this.getSize_x(), this.getStartingLocation().getY()+this.getSize_y());
+			topRightCoordinate = new TwoDimensionalCoordinate(this.getStartingLocation().getX()+(this.getSize_x()-1), this.getStartingLocation().getY()+(this.getSize_y()-1));
 		}
 		return topRightCoordinate;
 	}
 	private TwoDimensionalCoordinate bottomRightCoordinate = null;
 	public  TwoDimensionalCoordinate getBottomRightCoordinate(){
 		if(bottomRightCoordinate == null){
-			bottomRightCoordinate = new TwoDimensionalCoordinate(this.getStartingLocation().getX()+this.getSize_x(), this.getStartingLocation().getY());
+			bottomRightCoordinate = new TwoDimensionalCoordinate(this.getStartingLocation().getX()+(this.getSize_x()-1), this.getStartingLocation().getY());
 		}
 		return bottomRightCoordinate;
 	}
