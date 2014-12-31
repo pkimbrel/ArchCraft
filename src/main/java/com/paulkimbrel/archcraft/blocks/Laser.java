@@ -43,7 +43,7 @@ public class Laser extends BlockContainer {
     
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-	this.setBlockBounds(0, 0, 0, 1, 1, 20);
+	this.setBlockBounds(.49f, .49f, .49f, .51f, .51f, .51f);
     }
     
     @Override

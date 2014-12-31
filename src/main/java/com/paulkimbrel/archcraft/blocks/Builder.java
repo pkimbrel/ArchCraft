@@ -15,6 +15,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -325,5 +326,14 @@ public class Builder extends BlockContainer implements ICommand {
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 	//this.setBlockBounds(0, 0, 0, 1, 1, 20);
+    }
+    
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World p_149668_1_,
+            int p_149668_2_,
+            int p_149668_3_,
+            int p_149668_4_) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

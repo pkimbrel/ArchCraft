@@ -9,55 +9,67 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class LaserRenderer extends TileEntitySpecialRenderer {
-
+    float angle = 0;
+    
     @Override
     public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f) {
+	
 	Tessellator tessellator = Tessellator.instance;
-	// Using glPushMatrix before doing our rendering, and then using
-	// glPopMatrix at the end means any "transformation"
-	// that we do (glTranslated, glRotated, et c.) does not screw up
-	// rendering in an unrelated part of the game.
+
 	GL11.glPushMatrix();
-	GL11.glTranslated(x, y, z); // This is necessary to make our rendering
-				    // happen in the right place.
+	GL11.glTranslated(x + .5f, y + .5f, z + .5f); // This is necessary to make our rendering
 	ResourceLocation textures = (new ResourceLocation("archcraft:textures/render/laser.png"));
-	// the ':' is very important
-	// binding the textures
 	Minecraft.getMinecraft().renderEngine.bindTexture(textures);
+	
+	int meta = tileentity.getWorldObj().getBlockMetadata(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
+	GL11.glRotatef(meta * -90, 0.0f, 1.0f, 0.0f);
+	GL11.glTranslated(0.0f, 0.0f, 1.0f); // This is necessary to make our rendering
+	renderLaser(tessellator);
+	
+	GL11.glRotatef(-90, 0.0f, 1.0f, 0.0f);
+	renderLaser(tessellator);
 
-	tessellator.startDrawingQuads();
-	tessellator.addVertexWithUV(.56, .44, 0, 0, 0);
-	tessellator.addVertexWithUV(.56, .56, 0, 0, 1);
-	tessellator.addVertexWithUV(.56, .56, 20, 1, 1);
-	tessellator.addVertexWithUV(.56, .44, 20, 1, 0);
-
-	tessellator.addVertexWithUV(.44, .56, 20, 0, 0);
-	tessellator.addVertexWithUV(.56, .56, 20, 0, 1);
-	tessellator.addVertexWithUV(.56, .56, 0, 1, 1);
-	tessellator.addVertexWithUV(.44, .56, 0, 1, 0);
+	GL11.glRotatef(-90, 1.0f, 0.0f, 0.0f);
+	renderLaser(tessellator);
 	
-	tessellator.addVertexWithUV(.44, .44, 0, 0, 0);
-	tessellator.addVertexWithUV(.44, .44, 20, 1, 0);
-	tessellator.addVertexWithUV(.44, .56, 20, 1, 1);
-	tessellator.addVertexWithUV(.44, .56, 0, 0, 1);
-
-	tessellator.addVertexWithUV(.56, .44, 20, 0, 0);
-	tessellator.addVertexWithUV(.44, .44, 20, 0, 1);
-	tessellator.addVertexWithUV(.44, .44, 0, 1, 1);
-	tessellator.addVertexWithUV(.56, .44, 0, 1, 0);
-	
-	tessellator.addVertexWithUV(.56, .44, 0, 0, 0);
-	tessellator.addVertexWithUV(.44, .44, 0, 0, 1);
-	tessellator.addVertexWithUV(.44, .56, 0, 1, 1);
-	tessellator.addVertexWithUV(.56, .56, 0, 1, 0);
-	
-	tessellator.addVertexWithUV(.44, .56, 20, 0, 0);
-	tessellator.addVertexWithUV(.44, .44, 20, 0, 1);
-	tessellator.addVertexWithUV(.56, .44, 20, 1, 1);
-	tessellator.addVertexWithUV(.56, .56, 20, 1, 0);
-	
-	tessellator.draw();
 	GL11.glPopMatrix();
     }
 
+    private void renderLaser(Tessellator tessellator) {
+	GL11.glPushMatrix();
+	tessellator.startDrawingQuads();
+	float pw = .04f;
+	float nw = -1 * pw;
+	tessellator.addVertexWithUV(pw, nw, 0, 0, 0);
+	tessellator.addVertexWithUV(pw, pw, 0, 0, 1);
+	tessellator.addVertexWithUV(pw, pw, 19, 20, 1);
+	tessellator.addVertexWithUV(pw, nw, 19, 20, 0);
+
+	tessellator.addVertexWithUV(nw, pw, 19, 0, 0);
+	tessellator.addVertexWithUV(pw, pw, 19, 0, 1);
+	tessellator.addVertexWithUV(pw, pw, 0, 20, 1);
+	tessellator.addVertexWithUV(nw, pw, 0, 20, 0);
+	
+	tessellator.addVertexWithUV(nw, nw, 0, 0, 0);
+	tessellator.addVertexWithUV(nw, nw, 19, 20, 0);
+	tessellator.addVertexWithUV(nw, pw, 19, 20, 1);
+	tessellator.addVertexWithUV(nw, pw, 0, 0, 1);
+
+	tessellator.addVertexWithUV(pw, nw, 19, 20, 0);
+	tessellator.addVertexWithUV(nw, nw, 19, 20, 1);
+	tessellator.addVertexWithUV(nw, nw, 0, 1, 1);
+	tessellator.addVertexWithUV(pw, nw, 0, 1, 0);
+	
+	tessellator.addVertexWithUV(pw, nw, 0, 0, 0);
+	tessellator.addVertexWithUV(nw, nw, 0, 0, 1);
+	tessellator.addVertexWithUV(nw, pw, 0, 1, 1);
+	tessellator.addVertexWithUV(pw, pw, 0, 1, 0);
+	
+	tessellator.addVertexWithUV(nw, pw, 19, 0, 0);
+	tessellator.addVertexWithUV(nw, nw, 19, 0, 1);
+	tessellator.addVertexWithUV(pw, nw, 19, 1, 1);
+	tessellator.addVertexWithUV(pw, pw, 19, 1, 0);
+	tessellator.draw();
+	GL11.glPopMatrix();
+    }
 }
