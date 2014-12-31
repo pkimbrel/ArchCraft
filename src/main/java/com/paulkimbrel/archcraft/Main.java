@@ -1,9 +1,13 @@
 package com.paulkimbrel.archcraft;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.common.MinecraftForge;
 
-import com.paulkimbrel.archcraft.blocks.BuilderContainer;
+import org.lwjgl.opengl.GL11;
+
 import com.paulkimbrel.archcraft.messaging.Command;
 import com.paulkimbrel.archcraft.messaging.CommandHandler;
 import com.paulkimbrel.archcraft.proxy.CommonProxy;
@@ -15,10 +19,8 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -39,7 +41,7 @@ public class Main {
     public static final int META_WEST = 1;
     public static final int META_NORTH = 2;
     public static final int META_EAST = 3;
-    
+
     public static final int BLOCK_SOUTH = 3;
     public static final int BLOCK_WEST = 4;
     public static final int BLOCK_NORTH = 2;
@@ -61,10 +63,11 @@ public class Main {
     public void preInit(FMLPreInitializationEvent event) {
 	proxy.preInit(event);
 	network = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
-	
-        // Open a channel from the GUI's to the server blocks
+
+	// Open a channel from the GUI's to the server blocks
 	network.registerMessage(CommandHandler.class, Command.class, Main.MSG_BUILDER, Side.SERVER);
     }
+
 
     /**
      * Setup mod here. Build data structures and register recipes.

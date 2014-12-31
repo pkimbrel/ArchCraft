@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -16,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import com.paulkimbrel.archcraft.Compute;
@@ -47,7 +49,7 @@ public class Builder extends BlockContainer implements ICommand {
 		    "*       *",
 		    "*       *",
 		    "*       *",
-		    "!       *",
+		    "        *",
 		    "*       *",
 		    "*       *",
 		    "*       *",
@@ -57,11 +59,11 @@ public class Builder extends BlockContainer implements ICommand {
 		    "*       *",
 		    "*       *",
 		    "*       *",
-		    "$       *",
 		    "*       *",
 		    "*       *",
 		    "*       *",
-		    "*********" },
+		    "*       *",
+		    "**** ****" },
 	    { "*********",
 		    "*       *",
 		    "*       *",
@@ -183,14 +185,21 @@ public class Builder extends BlockContainer implements ICommand {
 	    for (int pz = 0; pz < level.length; pz++) {
 		String row = testPattern1[py][pz];
 		for (int px = 0; px < row.length(); px++) {
-		    if (direction == Main.META_EAST) {
-			world.setBlock(x + 1 + px, y + py - 1, z + pz, Blocks.air);
-		    } else if (direction == Main.META_SOUTH) {
-			world.setBlock(x - pz, y + py - 1, z + px + 1, Blocks.air);
-		    } else if (direction == Main.META_WEST) {
-			world.setBlock(x - px - 1, y + py - 1, z - pz, Blocks.air);
+		    Block block;
+		    if (py == 0) {
+			block = Blocks.dirt;
 		    } else {
-			world.setBlock(x + pz, y + py - 1, z - px - 1, Blocks.air);
+			block = Blocks.air;
+		    }
+
+		    if (direction == Main.META_EAST) {
+			world.setBlock(x + 1 + px, y + py - 1, z + pz, block);
+		    } else if (direction == Main.META_SOUTH) {
+			world.setBlock(x - pz, y + py - 1, z + px + 1, block);
+		    } else if (direction == Main.META_WEST) {
+			world.setBlock(x - px - 1, y + py - 1, z - pz, block);
+		    } else {
+			world.setBlock(x + pz, y + py - 1, z - px - 1, block);
 		    }
 		}
 	    }
@@ -241,7 +250,7 @@ public class Builder extends BlockContainer implements ICommand {
 			bz = z - px - 1;
 		    }
 		    if (metaData >= 0) {
-			world.setBlock(x, y, z, block, metaData, 2);
+			world.setBlock(bx, by, bz, block, metaData, 2);
 		    } else {
 			world.setBlock(bx, by, bz, block);
 		    }
@@ -264,9 +273,7 @@ public class Builder extends BlockContainer implements ICommand {
 	    EntityLivingBase entity,
 	    ItemStack itemStack) {
 	world.setBlockMetadataWithNotify(x, y, z, Compute.computeDirection(entity), 2);
-	if (itemStack.hasDisplayName()) {
-	    ((BuilderEntity) world.getTileEntity(x, y, z)).setGuiDisplayName(itemStack.getDisplayName());
-	}
+
     }
 
     @Override
@@ -315,4 +322,8 @@ public class Builder extends BlockContainer implements ICommand {
 	}
     }
 
+    @Override
+    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+	//this.setBlockBounds(0, 0, 0, 1, 1, 20);
+    }
 }

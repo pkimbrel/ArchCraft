@@ -21,7 +21,6 @@ import cpw.mods.fml.relauncher.Side;
 public class BuilderEntity extends TileEntity implements IInventory {
     private World world;
     private int metadata;
-    private String localizedDisplayName;
 
     private ItemStack[] inventory;
 
@@ -32,10 +31,6 @@ public class BuilderEntity extends TileEntity implements IInventory {
 	this.inventory = new ItemStack[9];
     }
     
-    public void setGuiDisplayName(String localizedDisplayName) {
-	this.localizedDisplayName = localizedDisplayName;
-    }
-
     @Override
     public int getSizeInventory() {
 	return inventory.length;

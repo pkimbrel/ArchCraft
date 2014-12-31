@@ -27,7 +27,6 @@ public class Command implements IMessage {
     @Override
     public void fromBytes(ByteBuf buf) {
 	String rawCommand = ByteBufUtils.readUTF8String(buf);
-	System.out.println("rawCommand: " + rawCommand);
 	String[] parse = rawCommand.split(":");
 	if (parse.length == 5) {
 	    dimension = Integer.parseInt(parse[0]);

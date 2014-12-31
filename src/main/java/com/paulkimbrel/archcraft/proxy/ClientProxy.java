@@ -1,7 +1,9 @@
 package com.paulkimbrel.archcraft.proxy;
 
 import com.paulkimbrel.archcraft.blocks.ArchitectTableEntity;
-import com.paulkimbrel.archcraft.renderer.TileEntityArchitectTableRenderer;
+import com.paulkimbrel.archcraft.blocks.LaserEntity;
+import com.paulkimbrel.archcraft.renderer.ArchitectTableRenderer;
+import com.paulkimbrel.archcraft.renderer.LaserRenderer;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -17,11 +19,13 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init(FMLInitializationEvent e) {
         super.init(e);
-        ClientRegistry.bindTileEntitySpecialRenderer(ArchitectTableEntity.class, new TileEntityArchitectTableRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(ArchitectTableEntity.class, new ArchitectTableRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(LaserEntity.class, new LaserRenderer());
     }
 
     @Override
     public void postInit(FMLPostInitializationEvent e) {
         super.postInit(e);
     }
+    
 }

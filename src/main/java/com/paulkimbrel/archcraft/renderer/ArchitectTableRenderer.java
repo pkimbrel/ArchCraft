@@ -14,12 +14,12 @@ import org.lwjgl.opengl.GL11;
 
 import com.paulkimbrel.archcraft.model.ArchitectTableModel;
 
-public class TileEntityArchitectTableRenderer extends TileEntitySpecialRenderer {
+public class ArchitectTableRenderer extends TileEntitySpecialRenderer {
     
     //The model of your block
     private final ArchitectTableModel model;
     
-    public TileEntityArchitectTableRenderer() {
+    public ArchitectTableRenderer() {
             this.model = new ArchitectTableModel();
     }
     

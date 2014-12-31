@@ -11,13 +11,6 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 public class CommandHandler implements IMessageHandler<Command, IMessage> {
     @Override
     public IMessage onMessage(Command message, MessageContext ctx) {
-	System.out.println(String.format("Received %s from %s at %d %d %d %d",
-		message.command,
-		ctx.getServerHandler().playerEntity.getDisplayName(),
-		message.dimension,
-		message.x,
-		message.y,
-		message.z));
 	WorldServer world = DimensionManager.getWorld(message.dimension);
 	if (world != null) {
 	    Block block = world.getBlock(message.x, message.y, message.z);
