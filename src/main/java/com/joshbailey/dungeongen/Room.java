@@ -1,5 +1,9 @@
 package com.joshbailey.dungeongen;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+
 /**
  * Represents a room in a dungeon.
  * @author jshwa86
@@ -93,7 +97,7 @@ public class Room {
 	 * another Room.
 	 * 
 	 * @param otherRoom the other Room to check for overlaps/shared space.
-	 * @return true if there is any overlap. Overlap is defined as:
+	 * @return true if there is no overlap. Overlap is defined as:
 	 * 1. One room contains the other room
 	 * 2. One room is accessible (i.e., you can walk from one room to the other)
 	 * from the other.
@@ -101,19 +105,7 @@ public class Room {
 	 * Else, false.
 	 */
 	public boolean separateFrom(Room otherRoom){
-		
-	    if (this.getTopLeftCoordinate().getX() > otherRoom.getBottomRightCoordinate().getX() 
-	    		|| 
-    		otherRoom.getTopLeftCoordinate().getX() > this.getBottomLeftCoordinate().getX())
-	        return true;
-	 
-	    if (this.getTopLeftCoordinate().getY() < otherRoom.getBottomRightCoordinate().getY() 
-	    		|| 
-    		otherRoom.getTopLeftCoordinate().getY() < this.getBottomRightCoordinate().getY())
-	        return true;
-		
-		
-		return false;
+	  return Collections.disjoint(this.outerRing(), otherRoom.outerRing());
 	}
 	
 	/**
@@ -134,5 +126,52 @@ public class Room {
 		}
 		return false;
 	}
+	
+	/**
+	 * Returns a collection of TwoDimensionalCoordinate points that represents the 'outer ring'
+	 * of this Room.
+	 * 
+	 * For ease of use, this method returns the outer ring of the Room's *walls*. This is intended to make
+	 * it easy to figure out the boundaries of the Room when comparing it to other things.
+	 * 
+	 * Example - For this Room:
+	 * @@@@
+	 * @..@
+	 * @@@@
+	 * 
+	 * Where: 
+	 * @ is a wall / solid space
+	 * . is open space
+	 * 
+	 * This method will return a collection that describes the solid space (the '@' symbols).
+	 * 
+	 * @return
+	 */
+	public Collection<TwoDimensionalCoordinate> outerRing(){
+		Collection<TwoDimensionalCoordinate> outerRing = new LinkedList<TwoDimensionalCoordinate>();
+		
+		outerRing.add(new TwoDimensionalCoordinate(this.getTopLeftCoordinate().getX()-1, this.getTopLeftCoordinate().getY()+1)); //Top left corner
+		outerRing.add(new TwoDimensionalCoordinate(this.getTopRightCoordinate().getX()+1, this.getTopRightCoordinate().getY()+1)); //Top right corner
+		outerRing.add(new TwoDimensionalCoordinate(this.getBottomRightCoordinate().getX()-1, this.getBottomRightCoordinate().getY()-1)); //Bottom left corner
+		outerRing.add(new TwoDimensionalCoordinate(this.getBottomLeftCoordinate().getX()+1, this.getBottomLeftCoordinate().getY()-1)); //Bottom right corner
+		
+		for(int i = this.getTopLeftCoordinate().getX() ; i <= this.getTopRightCoordinate().getX() ; i++){ 
+			outerRing.add(new TwoDimensionalCoordinate(i, this.getTopLeftCoordinate().getY()+1)); //top wall
+			outerRing.add(new TwoDimensionalCoordinate(i, this.getBottomLeftCoordinate().getY()-1)); //bottom wall
+		}
+		for(int i = this.getBottomRightCoordinate().getY() ; i <= this.getTopLeftCoordinate().getY() ; i++){
+			outerRing.add(new TwoDimensionalCoordinate(this.getTopLeftCoordinate().getX()-1, i)); //left wall
+			outerRing.add(new TwoDimensionalCoordinate(this.getTopRightCoordinate().getX()+1, i)); //right wall
+		}
+		return outerRing;
+	}
+
+	@Override
+	public String toString() {
+		return "Room [startingLocation=" + startingLocation + ", size_x="
+				+ size_x + ", size_y=" + size_y + "]";
+	}
+	
+	
 	
 }
