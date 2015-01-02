@@ -8,20 +8,21 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import com.paulkimbrel.archcraft.Main;
+import com.paulkimbrel.archcraft.entities.LaserEntityOld;
 
-public class Laser extends BlockContainer {
+public class LaserOld extends BlockContainer {
 
-    public Laser(String unlocalizedName, Material material) {
+    public LaserOld(String unlocalizedName, Material material) {
 	super(material);
 	this.setBlockName(unlocalizedName);
-	this.setBlockTextureName(Main.MODID + ":" + unlocalizedName);
+	this.setBlockTextureName(Main.MODID + ":empty");
 	this.setCreativeTab(Main.creativeTab);
     }
 
     //Make sure you set this as your TileEntity class relevant for the block!
     @Override
     public TileEntity createNewTileEntity(World world, int id) {
-            return new LaserEntity();
+            return new LaserEntityOld();
     }
     
     //You don't want the normal render type, or it wont render properly.

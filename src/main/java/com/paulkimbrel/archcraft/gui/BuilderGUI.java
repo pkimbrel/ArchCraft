@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.paulkimbrel.archcraft.Main;
 import com.paulkimbrel.archcraft.blocks.BuilderContainer;
-import com.paulkimbrel.archcraft.blocks.BuilderEntity;
+import com.paulkimbrel.archcraft.entities.BuilderEntity;
 import com.paulkimbrel.archcraft.messaging.Command;
 
 import cpw.mods.fml.relauncher.Side;

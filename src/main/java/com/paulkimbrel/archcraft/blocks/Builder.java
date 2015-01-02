@@ -24,6 +24,7 @@ import net.minecraft.world.World;
 import com.paulkimbrel.archcraft.Compute;
 import com.paulkimbrel.archcraft.Main;
 import com.paulkimbrel.archcraft.AllItems;
+import com.paulkimbrel.archcraft.entities.BuilderEntity;
 import com.paulkimbrel.archcraft.messaging.Command;
 import com.paulkimbrel.archcraft.messaging.ICommand;
 
@@ -261,12 +262,6 @@ public class Builder extends BlockContainer implements ICommand {
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int mysteryParameter) {
-	dropItems(world, x, y, z);
-	super.breakBlock(world, x, y, z, block, mysteryParameter);
-    }
-
-    @Override
     public void onBlockPlacedBy(World world,
 	    int x,
 	    int y,
@@ -274,23 +269,32 @@ public class Builder extends BlockContainer implements ICommand {
 	    EntityLivingBase entity,
 	    ItemStack itemStack) {
 	world.setBlockMetadataWithNotify(x, y, z, Compute.computeDirection(entity), 2);
-
     }
 
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
-	return new BuilderEntity(world, metadata);
+	return new BuilderEntity();
     }
 
-    private void dropItems(World world, int x, int y, int z) {
-	Random rand = new Random();
-
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int mysteryParameter) {
 	TileEntity tileEntity = world.getTileEntity(x, y, z);
-	if (!(tileEntity instanceof IInventory)) {
+	if (!(tileEntity instanceof IInventory) && !(tileEntity instanceof BuilderEntity)) {
 	    return;
 	}
+	
+	dropItems(world, (IInventory)tileEntity, x, y, z);
+	
+	BuilderEntity builder = (BuilderEntity) tileEntity;
+	if (!world.isRemote) {
+	    builder.removeLasers();
+	}
 
-	IInventory inventory = (IInventory) tileEntity;
+	super.breakBlock(world, x, y, z, block, mysteryParameter);
+    }
+
+    private void dropItems(World world, IInventory inventory, int x, int y, int z) {
+	Random rand = new Random();
 
 	for (int i = 0; i < inventory.getSizeInventory(); i++) {
 	    ItemStack item = inventory.getStackInSlot(i);
@@ -323,17 +327,4 @@ public class Builder extends BlockContainer implements ICommand {
 	}
     }
 
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-	//this.setBlockBounds(0, 0, 0, 1, 1, 20);
-    }
-    
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World p_149668_1_,
-            int p_149668_2_,
-            int p_149668_3_,
-            int p_149668_4_) {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

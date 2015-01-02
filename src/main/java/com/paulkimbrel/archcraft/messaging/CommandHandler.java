@@ -11,6 +11,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 public class CommandHandler implements IMessageHandler<Command, IMessage> {
     @Override
     public IMessage onMessage(Command message, MessageContext ctx) {
+	System.out.println("Got command at: (" + message.dimension + ") " + message.x + "," + message.y + "," + message.z + " -- Command: " + message.command);
 	WorldServer world = DimensionManager.getWorld(message.dimension);
 	if (world != null) {
 	    Block block = world.getBlock(message.x, message.y, message.z);

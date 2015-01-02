@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 
 import com.paulkimbrel.archcraft.Compute;
 import com.paulkimbrel.archcraft.Main;
+import com.paulkimbrel.archcraft.entities.ArchitectTableEntity;
 
 public class ArchitectTable extends BlockContainer {
 

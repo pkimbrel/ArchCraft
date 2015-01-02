@@ -1,36 +1,45 @@
-package com.paulkimbrel.archcraft.blocks;
+package com.paulkimbrel.archcraft.entities;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 
 import com.paulkimbrel.archcraft.Main;
+import com.paulkimbrel.archcraft.core.BaseTileEntity;
 import com.paulkimbrel.archcraft.messaging.Command;
-import com.paulkimbrel.archcraft.messaging.ICommand;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import cpw.mods.fml.relauncher.Side;
-
-public class BuilderEntity extends TileEntity implements IInventory {
-    private World world;
-    private int metadata;
-
+public class BuilderEntity extends BaseTileEntity implements IInventory {
     private ItemStack[] inventory;
+    
+    public LaserEntity laser;
 
-    public BuilderEntity(World world, int metadata) {
+    public BuilderEntity() {
 	super();
-	this.world = world;
-	this.metadata = metadata;
 	this.inventory = new ItemStack[9];
     }
+
+    @Override
+    protected void initialize() {
+	if (!worldObj.isRemote) {
+	    addLasers();
+	}
+    }
+
+    public void addLasers() {
+	System.out.println("Adding lasers");
+	laser = new LaserEntity(getWorldObj(), this);
+	getWorldObj().spawnEntityInWorld(laser);
+    }
     
+    public void removeLasers() {
+	getWorldObj().removeEntity(laser);
+    }
+
     @Override
     public int getSizeInventory() {
 	return inventory.length;
@@ -139,5 +148,5 @@ public class BuilderEntity extends TileEntity implements IInventory {
 	}
 	tagCompound.setTag("Inventory", itemList);
     }
-    
+
 }

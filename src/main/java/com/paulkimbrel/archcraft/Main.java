@@ -35,6 +35,7 @@ public class Main {
     public static final String SERVER_PROXY = "com.paulkimbrel.archcraft.proxy.ServerProxy";
 
     public static final int GUI_BUILDER = 0;
+    
     public static final int MSG_BUILDER = 0;
 
     public static final int META_SOUTH = 0;
@@ -62,9 +63,8 @@ public class Main {
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
 	proxy.preInit(event);
+	
 	network = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
-
-	// Open a channel from the GUI's to the server blocks
 	network.registerMessage(CommandHandler.class, Command.class, Main.MSG_BUILDER, Side.SERVER);
     }
 

@@ -1,4 +1,4 @@
-package com.paulkimbrel.archcraft.blocks;
+package com.paulkimbrel.archcraft.entities;
 
 import net.minecraft.tileentity.TileEntity;
 

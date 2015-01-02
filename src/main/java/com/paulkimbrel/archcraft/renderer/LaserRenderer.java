@@ -2,26 +2,41 @@ package com.paulkimbrel.archcraft.renderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-public class LaserRenderer extends TileEntitySpecialRenderer {
-    float angle = 0;
-    
+import com.paulkimbrel.archcraft.entities.LaserEntity;
+
+public class LaserRenderer extends Render {
     @Override
-    public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f) {
+    public void doRender(Entity entity,
+	    double x,
+	    double y,
+	    double z,
+	    float f1,
+	    float f2) {
+	
+	LaserEntity laserEntity = (LaserEntity) entity;
+	//System.out.println("render: " + x + " - " + y + " - " + z);
+	//System.out.println("entity: " + entity.serverPosX + " - " + entity.serverPosY + " - " + entity.serverPosZ);
+	//System.out.println(laserEntity.builderX + " - " + laserEntity.builderY + " - " + laserEntity.builderZ);
 	
 	Tessellator tessellator = Tessellator.instance;
 
 	GL11.glPushMatrix();
-	GL11.glTranslated(x + .5f, y + .5f, z + .5f); // This is necessary to make our rendering
+	GL11.glTranslated(x, y, z); // This is necessary to make our rendering
+	
 	ResourceLocation textures = (new ResourceLocation("archcraft:textures/render/laser.png"));
 	Minecraft.getMinecraft().renderEngine.bindTexture(textures);
 	
-	int meta = tileentity.getWorldObj().getBlockMetadata(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
+	int meta = entity.worldObj.getBlockMetadata((int)laserEntity.posX, (int)laserEntity.posY, (int)laserEntity.posZ);
+	//GL11.glTranslated(0.0f, 0.0f, 1.0f); // This is necessary to make our rendering
+	System.out.println(meta);
 	GL11.glRotatef(meta * -90, 0.0f, 1.0f, 0.0f);
 	GL11.glTranslated(0.0f, 0.0f, 1.0f); // This is necessary to make our rendering
 	renderLaser(tessellator);
@@ -33,6 +48,11 @@ public class LaserRenderer extends TileEntitySpecialRenderer {
 	renderLaser(tessellator);
 	
 	GL11.glPopMatrix();
+    }
+
+    @Override
+    protected ResourceLocation getEntityTexture(Entity entity) {
+	return new ResourceLocation("archcraft:textures/render/laser.png");
     }
 
     private void renderLaser(Tessellator tessellator) {
@@ -72,4 +92,5 @@ public class LaserRenderer extends TileEntitySpecialRenderer {
 	tessellator.draw();
 	GL11.glPopMatrix();
     }
+
 }
