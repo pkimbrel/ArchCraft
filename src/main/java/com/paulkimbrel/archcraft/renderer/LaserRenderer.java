@@ -25,6 +25,7 @@ public class LaserRenderer extends Render {
 	//System.out.println("render: " + x + " - " + y + " - " + z);
 	//System.out.println("entity: " + entity.serverPosX + " - " + entity.serverPosY + " - " + entity.serverPosZ);
 	//System.out.println(laserEntity.builderX + " - " + laserEntity.builderY + " - " + laserEntity.builderZ);
+	//System.out.println((int)Math.floor(laserEntity.posX) + " - " + (int)Math.floor(laserEntity.posY) + " - " + (int)Math.floor(laserEntity.posY));
 	
 	Tessellator tessellator = Tessellator.instance;
 
@@ -34,9 +35,9 @@ public class LaserRenderer extends Render {
 	ResourceLocation textures = (new ResourceLocation("archcraft:textures/render/laser.png"));
 	Minecraft.getMinecraft().renderEngine.bindTexture(textures);
 	
-	int meta = entity.worldObj.getBlockMetadata((int)laserEntity.posX, (int)laserEntity.posY, (int)laserEntity.posZ);
+	int meta = entity.worldObj.getBlockMetadata((int)Math.floor(laserEntity.posX), (int)Math.floor(laserEntity.posY), (int)Math.floor(laserEntity.posZ));
 	//GL11.glTranslated(0.0f, 0.0f, 1.0f); // This is necessary to make our rendering
-	System.out.println(meta);
+	//System.out.println(meta);
 	GL11.glRotatef(meta * -90, 0.0f, 1.0f, 0.0f);
 	GL11.glTranslated(0.0f, 0.0f, 1.0f); // This is necessary to make our rendering
 	renderLaser(tessellator);
