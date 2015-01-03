@@ -3,13 +3,13 @@ package com.paulkimbrel.archcraft.renderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import com.paulkimbrel.archcraft.blocks.Builder;
+import com.paulkimbrel.archcraft.entities.BuilderEntity;
 import com.paulkimbrel.archcraft.entities.LaserEntity;
 
 public class LaserRenderer extends Render {
@@ -20,34 +20,73 @@ public class LaserRenderer extends Render {
 	    double z,
 	    float f1,
 	    float f2) {
-	
+
 	LaserEntity laserEntity = (LaserEntity) entity;
-	//System.out.println("render: " + x + " - " + y + " - " + z);
-	//System.out.println("entity: " + entity.serverPosX + " - " + entity.serverPosY + " - " + entity.serverPosZ);
-	//System.out.println(laserEntity.builderX + " - " + laserEntity.builderY + " - " + laserEntity.builderZ);
-	//System.out.println((int)Math.floor(laserEntity.posX) + " - " + (int)Math.floor(laserEntity.posY) + " - " + (int)Math.floor(laserEntity.posY));
+	// System.out.println("render: " + x + " - " + y + " - " + z);
+	// System.out.println("entity: " + entity.serverPosX + " - " +
+	// entity.serverPosY + " - " + entity.serverPosZ);
+	// System.out.println(laserEntity.builderX + " - " +
+	// laserEntity.builderY + " - " + laserEntity.builderZ);
+	// System.out.println((int)Math.floor(laserEntity.posX) + " - " +
+	// (int)Math.floor(laserEntity.posY) + " - " +
+	// (int)Math.floor(laserEntity.posY));
+
+	int xCoord = (int) Math.floor(laserEntity.posX);
+	int yCoord = (int) Math.floor(laserEntity.posY);
+	int zCoord = (int) Math.floor(laserEntity.posZ);
+
+	BuilderEntity builderEntity = (BuilderEntity) entity.worldObj.getTileEntity(xCoord, yCoord, zCoord);
+	if (builderEntity == null) {
+	    return;
+	}
 	
 	Tessellator tessellator = Tessellator.instance;
-
 	GL11.glPushMatrix();
 	GL11.glTranslated(x, y, z); // This is necessary to make our rendering
-	
+
 	ResourceLocation textures = (new ResourceLocation("archcraft:textures/render/laser.png"));
 	Minecraft.getMinecraft().renderEngine.bindTexture(textures);
 	
-	int meta = entity.worldObj.getBlockMetadata((int)Math.floor(laserEntity.posX), (int)Math.floor(laserEntity.posY), (int)Math.floor(laserEntity.posZ));
-	//GL11.glTranslated(0.0f, 0.0f, 1.0f); // This is necessary to make our rendering
-	//System.out.println(meta);
-	GL11.glRotatef(meta * -90, 0.0f, 1.0f, 0.0f);
-	GL11.glTranslated(0.0f, 0.0f, 1.0f); // This is necessary to make our rendering
-	renderLaser(tessellator);
-	
-	GL11.glRotatef(-90, 0.0f, 1.0f, 0.0f);
-	renderLaser(tessellator);
+	int width = builderEntity.width - 1;
+	int depth = builderEntity.depth - 1;
+	int height = builderEntity.height - 1;
 
-	GL11.glRotatef(-90, 1.0f, 0.0f, 0.0f);
-	renderLaser(tessellator);
+	int meta = entity.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 	
+	GL11.glRotatef(meta * -90, 0.0f, 1.0f, 0.0f);
+	GL11.glTranslated(0.0f, 0.0f, 1.0f); 
+	
+	// Depth lasers
+	renderLaser(tessellator, depth);
+	GL11.glTranslated(-1 * width, 0.0f, 0.0f); 
+	renderLaser(tessellator, depth);
+	GL11.glTranslated(0.0f, height, 0.0f); 
+	renderLaser(tessellator, depth);
+	GL11.glTranslated(width, 0.0f, 0.0f); 
+	renderLaser(tessellator, depth);
+	GL11.glTranslated(0.0f, -1 * height, 0.0f);
+
+	// Width lasers
+	GL11.glRotatef(-90, 0.0f, 1.0f, 0.0f);
+	renderLaser(tessellator, width);
+	GL11.glTranslated(depth, 0.0f, 0.0f); 
+	renderLaser(tessellator, width);
+	GL11.glTranslated(0.0f, height, 0.0f); 
+	renderLaser(tessellator, width);
+	GL11.glTranslated(-1 * depth, 0.0f, 0.0f);
+	renderLaser(tessellator, width);
+	GL11.glTranslated(0.0f, -1 * height, 0.0f);
+
+	// Height Lasers
+	GL11.glRotatef(-90, 1.0f, 0.0f, 0.0f);
+	renderLaser(tessellator, height);
+	GL11.glTranslated(depth, 0.0f, 0.0f);
+	renderLaser(tessellator, height);
+	GL11.glTranslated(0.0f, -1 * width, 0.0f);
+	renderLaser(tessellator, height);
+	GL11.glTranslated(-1 * depth, 0.0f, 0.0f);
+	renderLaser(tessellator, height);
+
 	GL11.glPopMatrix();
     }
 
@@ -56,40 +95,40 @@ public class LaserRenderer extends Render {
 	return new ResourceLocation("archcraft:textures/render/laser.png");
     }
 
-    private void renderLaser(Tessellator tessellator) {
+    private void renderLaser(Tessellator tessellator, int length) {
 	GL11.glPushMatrix();
 	tessellator.startDrawingQuads();
 	float pw = .04f;
 	float nw = -1 * pw;
 	tessellator.addVertexWithUV(pw, nw, 0, 0, 0);
 	tessellator.addVertexWithUV(pw, pw, 0, 0, 1);
-	tessellator.addVertexWithUV(pw, pw, 19, 20, 1);
-	tessellator.addVertexWithUV(pw, nw, 19, 20, 0);
+	tessellator.addVertexWithUV(pw, pw, length, length, 1);
+	tessellator.addVertexWithUV(pw, nw, length, length, 0);
 
-	tessellator.addVertexWithUV(nw, pw, 19, 0, 0);
-	tessellator.addVertexWithUV(pw, pw, 19, 0, 1);
+	tessellator.addVertexWithUV(nw, pw, length, 0, 0);
+	tessellator.addVertexWithUV(pw, pw, length, 0, 1);
 	tessellator.addVertexWithUV(pw, pw, 0, 20, 1);
 	tessellator.addVertexWithUV(nw, pw, 0, 20, 0);
-	
+
 	tessellator.addVertexWithUV(nw, nw, 0, 0, 0);
-	tessellator.addVertexWithUV(nw, nw, 19, 20, 0);
-	tessellator.addVertexWithUV(nw, pw, 19, 20, 1);
+	tessellator.addVertexWithUV(nw, nw, length, length, 0);
+	tessellator.addVertexWithUV(nw, pw, length, length, 1);
 	tessellator.addVertexWithUV(nw, pw, 0, 0, 1);
 
-	tessellator.addVertexWithUV(pw, nw, 19, 20, 0);
-	tessellator.addVertexWithUV(nw, nw, 19, 20, 1);
+	tessellator.addVertexWithUV(pw, nw, length, length, 0);
+	tessellator.addVertexWithUV(nw, nw, length, length, 1);
 	tessellator.addVertexWithUV(nw, nw, 0, 1, 1);
 	tessellator.addVertexWithUV(pw, nw, 0, 1, 0);
-	
+
 	tessellator.addVertexWithUV(pw, nw, 0, 0, 0);
 	tessellator.addVertexWithUV(nw, nw, 0, 0, 1);
 	tessellator.addVertexWithUV(nw, pw, 0, 1, 1);
 	tessellator.addVertexWithUV(pw, pw, 0, 1, 0);
-	
-	tessellator.addVertexWithUV(nw, pw, 19, 0, 0);
-	tessellator.addVertexWithUV(nw, nw, 19, 0, 1);
-	tessellator.addVertexWithUV(pw, nw, 19, 1, 1);
-	tessellator.addVertexWithUV(pw, pw, 19, 1, 0);
+
+	tessellator.addVertexWithUV(nw, pw, length, 0, 0);
+	tessellator.addVertexWithUV(nw, nw, length, 0, 1);
+	tessellator.addVertexWithUV(pw, nw, length, 1, 1);
+	tessellator.addVertexWithUV(pw, pw, length, 1, 0);
 	tessellator.draw();
 	GL11.glPopMatrix();
     }

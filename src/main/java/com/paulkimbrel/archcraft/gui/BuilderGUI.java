@@ -34,28 +34,50 @@ public class BuilderGUI extends GuiContainer {
 	rootX = (width - xSize) / 2;
 	rootY = (height - ySize) / 2;
 	buttonList.add(new GuiButton(1, rootX + 12, rootY + 23, 40, 20, "Test"));
-	buttonList.add(new GuiButton(2, rootX + 12, rootY + 43, 40, 20, "Clear"));
+	buttonList.add(new GuiButton(2, rootX + 12, rootY + 42, 40, 20, "Clear"));
+	buttonList.add(new GuiButton(3, rootX + xSize - 51, rootY + 14, 20, 20, "-"));
+	buttonList.add(new GuiButton(4, rootX + xSize - 32, rootY + 14, 20, 20, "+"));
+	buttonList.add(new GuiButton(5, rootX + xSize - 51, rootY + 33, 20, 20, "-"));
+	buttonList.add(new GuiButton(6, rootX + xSize - 32, rootY + 33, 20, 20, "+"));
+	buttonList.add(new GuiButton(7, rootX + xSize - 51, rootY + 52, 20, 20, "-"));
+	buttonList.add(new GuiButton(8, rootX + xSize - 32, rootY + 52, 20, 20, "+"));
     }
 
     @Override
     protected void actionPerformed(GuiButton button) {
+	String command = "";
 	switch (button.id) {
 	    case 1:
-		Main.network.sendToServer(new Command(tileEntity.getWorldObj().provider.dimensionId,
-			tileEntity.xCoord,
-			tileEntity.yCoord,
-			tileEntity.zCoord,
-			"testPattern1"));
-		
+		command = "testPattern1";
 		break;
 	    case 2:
+		command = "clearTestPattern1";
+		break;
+	    case 3:
+		command = "widthDown";
+		break;
+	    case 4:
+		command = "widthUp";
+		break;
+	    case 5:
+		command = "heightDown";
+		break;
+	    case 6:
+		command = "heightUp";
+		break;
+	    case 7:
+		command = "depthDown";
+		break;
+	    case 8:
+		command = "depthUp";
+		break;
+	}
+	if (!"".equals(command)) {
 		Main.network.sendToServer(new Command(tileEntity.getWorldObj().provider.dimensionId,
 			tileEntity.xCoord,
 			tileEntity.yCoord,
 			tileEntity.zCoord,
-			"clearTestPattern1"));
-
-		break;
+			command));
 	}
     }
 

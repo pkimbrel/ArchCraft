@@ -2,8 +2,10 @@ package com.paulkimbrel.archcraft.blocks;
 
 import java.util.Random;
 
+import sun.java2d.xr.DirtyRegion;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockDoor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -33,78 +35,9 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
-public class Builder extends BlockContainer implements ICommand {
+public class Builder extends BlockContainer {
     public IIcon[] icons = new IIcon[6];
     public IIcon directionIcon;
-
-    public static String[][] testPattern1 = new String[][] {
-	    { "@@@@@@@@@",
-		    "@@@@@@@@@",
-		    "@@@@@@@@@",
-		    "@@@@@@@@@",
-		    "@@@@@@@@@",
-		    "@@@@@@@@@",
-		    "@@@@@@@@@",
-		    "@@@@@@@@@",
-		    "@@@@@@@@@" },
-	    { "*********",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "        *",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*********" },
-
-	    { "*********",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "**** ****" },
-	    { "*********",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*********" },
-
-	    { "*********",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*********" },
-	    { "*********",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*       *",
-		    "*********" },
-
-	    { "*********",
-		    "*********",
-		    "**##*##**",
-		    "**##*##**",
-		    "*********",
-		    "**##*##**",
-		    "**##*##**",
-		    "*********",
-		    "*********" },
-    };
 
     public Builder(String unlocalizedName, Material material) {
 	super(material);
@@ -167,97 +100,6 @@ public class Builder extends BlockContainer implements ICommand {
 	} else {
 	    player.openGui(Main.instance, Main.GUI_BUILDER, world, x, y, z);
 	    return true;
-	}
-    }
-
-    @Override
-    public void executeCommand(World world, int x, int y, int z, String command) {
-	if (command.equals("testPattern1")) {
-	    buildTestPattern1(world, x, y, z);
-	} else if (command.equals("clearTestPattern1")) {
-	    clearTestPattern1(world, x, y, z);
-	}
-    }
-
-    private void clearTestPattern1(World world, int x, int y, int z) {
-	int direction = world.getBlockMetadata(x, y, z);
-
-	for (int py = 0; py < testPattern1.length; py++) {
-	    String[] level = testPattern1[py];
-	    for (int pz = 0; pz < level.length; pz++) {
-		String row = testPattern1[py][pz];
-		for (int px = 0; px < row.length(); px++) {
-		    Block block;
-		    if (py == 0) {
-			block = Blocks.dirt;
-		    } else {
-			block = Blocks.air;
-		    }
-
-		    if (direction == Main.META_EAST) {
-			world.setBlock(x + 1 + px, y + py - 1, z + pz, block);
-		    } else if (direction == Main.META_SOUTH) {
-			world.setBlock(x - pz, y + py - 1, z + px + 1, block);
-		    } else if (direction == Main.META_WEST) {
-			world.setBlock(x - px - 1, y + py - 1, z - pz, block);
-		    } else {
-			world.setBlock(x + pz, y + py - 1, z - px - 1, block);
-		    }
-		}
-	    }
-	}
-    }
-
-    private void buildTestPattern1(World world, int x, int y, int z) {
-	int direction = world.getBlockMetadata(x, y, z);
-
-	for (int py = 0; py < testPattern1.length; py++) {
-	    String[] level = testPattern1[py];
-	    for (int pz = 0; pz < level.length; pz++) {
-		String row = testPattern1[py][pz];
-		for (int px = 0; px < row.length(); px++) {
-		    Block block;
-		    int metaData = -1;
-		    if (testPattern1[py][pz].charAt(px) == '*') {
-			block = Blocks.cobblestone;
-		    } else if (testPattern1[py][pz].charAt(px) == '#') {
-			block = Blocks.glass;
-		    } else if (testPattern1[py][pz].charAt(px) == '@') {
-			block = Blocks.gold_block;
-		    } else if (testPattern1[py][pz].charAt(px) == '!') {
-			block = Blocks.wooden_door;
-			metaData = 3;
-		    } else if (testPattern1[py][pz].charAt(px) == '$') {
-			block = Blocks.wooden_door;
-			metaData = 8;
-		    } else {
-			block = Blocks.air;
-		    }
-		    int bx, by, bz;
-		    if (direction == Main.META_EAST) {
-			bx = x + 1 + px;
-			by = y + py - 1;
-			bz = z + pz;
-		    } else if (direction == Main.META_SOUTH) {
-			bx = x - pz;
-			by = y + py - 1;
-			bz = z + px + 1;
-		    } else if (direction == Main.META_WEST) {
-			bx = x - px - 1;
-			by = y + py - 1;
-			bz = z - pz;
-		    } else {
-			bx = x + pz;
-			by = y + py - 1;
-			bz = z - px - 1;
-		    }
-		    if (metaData >= 0) {
-			world.setBlock(bx, by, bz, block, metaData, 2);
-		    } else {
-			world.setBlock(bx, by, bz, block);
-		    }
-		}
-	    }
 	}
     }
 

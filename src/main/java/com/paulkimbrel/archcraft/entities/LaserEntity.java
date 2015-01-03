@@ -14,10 +14,6 @@ public class LaserEntity extends Entity {
     @SideOnly(Side.CLIENT)
     public IIcon texture;
 
-    public int builderX = 0;
-    public int builderY = 0;
-    public int builderZ = 0;
-    
     public boolean initialized = false;
 
     public LaserEntity(World world) {
@@ -28,17 +24,12 @@ public class LaserEntity extends Entity {
 	}
     }
 
-    public LaserEntity(World world, BuilderEntity builderEntity) {
+    public LaserEntity(World world, int x, int y, int z) {
 	super(world);
 	System.out.println("*********CREATE LEGIT");
-	builderX = builderEntity.xCoord;
-	builderY = builderEntity.yCoord;
-	builderZ = builderEntity.zCoord;
 	initialized = true;
 	
-	System.out.println(builderX + " - " + builderY + " - " + builderZ);
-	
-	setPosition(builderX + .5, builderY + .5, builderZ + .5);
+	setPosition(x + .5, y + .5, z + .5);
     }
 
     @Override
