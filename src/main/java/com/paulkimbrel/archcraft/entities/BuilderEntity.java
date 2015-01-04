@@ -203,7 +203,7 @@ public class BuilderEntity extends BaseTileEntity implements IInventory, IComman
 	    for (int px = 0; px < row.length(); px++) {
 		char blockIndicator = row.charAt(px);
 		Block floor = Blocks.stone;
-		Block ceiling = Blocks.planks;
+		Block ceiling = Blocks.glowstone;
 		Block walls = Blocks.cobblestone;
 		Block air = Blocks.air;
 		if (blockIndicator == ' ') {
