@@ -2,6 +2,8 @@ package com.paulkimbrel.archcraft.entities;
 
 import java.util.List;
 
+import org.lwjgl.Sys;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.DataWatcher.WatchableObject;
 import net.minecraft.entity.Entity;
@@ -25,6 +27,8 @@ public class LaserEntity extends Entity {
     public int builderX = 0;
     public int builderY = 0;
     public int builderZ = 0;
+    
+    public boolean show = false;
 
     // Called by the client only.
     // If the server calls this, it's during world load - blocks will rebuild lasers so kill this instance.
@@ -34,6 +38,7 @@ public class LaserEntity extends Entity {
 	    // Auto Kill (we shant leave any lasers behind)
 	    isDead = true;
 	}
+	System.out.println("Client side create");
     }
 
     // Called by the server only.
@@ -42,6 +47,10 @@ public class LaserEntity extends Entity {
 	builderX = x;
 	builderY = y;
 	builderZ = z;
+	posX = x;
+	posY = y;
+	posZ = z;
+	System.out.println("Server side create");
     }
 
     @Override
@@ -78,6 +87,7 @@ public class LaserEntity extends Entity {
 		break;
 	}
 	setPosition(builderX + offsetX + .5, builderY + offsetY + .5, builderZ + offsetZ + .5);
+	show = true;
     }
 
     // Client wants to move the entity to avoid touching other blocks. Stupid client. "No clip" means no moving!!

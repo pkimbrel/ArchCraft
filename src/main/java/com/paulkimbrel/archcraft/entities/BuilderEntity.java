@@ -159,11 +159,9 @@ public class BuilderEntity extends BaseTileEntity implements IInventory, IComman
     private void clearTestPattern1(World world, int x, int y, int z) {
 	int direction = world.getBlockMetadata(x, y, z);
 
-	for (int py = 0; py < testPattern1.length; py++) {
-	    String[] level = testPattern1[py];
-	    for (int pz = 0; pz < level.length; pz++) {
-		String row = testPattern1[py][pz];
-		for (int px = 0; px < row.length(); px++) {
+	for (int py = 0; py < height+1; py++) {
+	    for (int pz = 0; pz < width; pz++) {
+		for (int px = 0; px < depth; px++) {
 		    Block block;
 		    if (py == 0) {
 			block = Blocks.dirt;

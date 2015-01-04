@@ -24,7 +24,7 @@ public class LaserRenderer extends Render {
 	LaserEntity laserEntity = (LaserEntity) entity;
 
 	BuilderEntity builderEntity = (BuilderEntity) entity.worldObj.getTileEntity(laserEntity.builderX, laserEntity.builderY, laserEntity.builderZ);
-	if (builderEntity == null) {
+	if (laserEntity.show == false || builderEntity == null) {
 	    return;
 	}
 	
