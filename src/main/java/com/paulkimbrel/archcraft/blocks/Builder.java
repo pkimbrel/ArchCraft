@@ -27,7 +27,7 @@ import com.paulkimbrel.archcraft.Main;
 import com.paulkimbrel.archcraft.AllItems;
 import com.paulkimbrel.archcraft.entities.BuilderEntity;
 import com.paulkimbrel.archcraft.messaging.Command;
-import com.paulkimbrel.archcraft.messaging.ICommand;
+import com.paulkimbrel.archcraft.messaging.ICommandReceiver;
 
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;

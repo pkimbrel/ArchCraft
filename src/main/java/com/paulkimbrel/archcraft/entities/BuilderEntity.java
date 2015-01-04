@@ -15,9 +15,9 @@ import net.minecraft.world.World;
 import com.joshbailey.dungeongen.DungeonGenerator;
 import com.paulkimbrel.archcraft.Main;
 import com.paulkimbrel.archcraft.core.SpatialTileEntity;
-import com.paulkimbrel.archcraft.messaging.ICommand;
+import com.paulkimbrel.archcraft.messaging.ICommandReceiver;
 
-public class BuilderEntity extends SpatialTileEntity implements IInventory, ICommand {
+public class BuilderEntity extends SpatialTileEntity implements IInventory {
     private ItemStack[] inventory;
 
     public static String[][] testPattern1 = new String[][] {
@@ -89,7 +89,6 @@ public class BuilderEntity extends SpatialTileEntity implements IInventory, ICom
 		    "*********" },
     };
 
-
     public BuilderEntity() {
 	super();
 	this.inventory = new ItemStack[9];
@@ -108,35 +107,9 @@ public class BuilderEntity extends SpatialTileEntity implements IInventory, ICom
 	    clearTestPattern1(world, x, y, z);
 	} else if (command.equals("testDungeon1")) {
 	    buildTestDungeon1(world, x, y, z);
-	} else if (command.equals("widthDown")) {
-	    if (width > 1) {
-		width--;
-	    }
-	} else if (command.equals("widthUp")) {
-	    if (width < MAX_SIZE) {
-		width++;
-	    }
-	} else if (command.equals("depthDown")) {
-	    if (depth > 1) {
-		depth--;
-	    }
-	} else if (command.equals("depthUp")) {
-	    if (depth < MAX_SIZE) {
-		depth++;
-	    }
-	} else if (command.equals("heightDown")) {
-	    if (height > 1) {
-		height--;
-	    }
-	} else if (command.equals("heightUp")) {
-	    if (height < MAX_SIZE) {
-		height++;
-	    }
+	} else {
+	    super.executeCommand(world, x, y, z, command);
 	}
-
-	laser.setSize(Math.max(width, depth), height);
-	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-	markDirty();
     }
 
     private void clearTestPattern1(World world, int x, int y, int z) {

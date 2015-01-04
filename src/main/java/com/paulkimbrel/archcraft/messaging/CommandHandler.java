@@ -15,8 +15,8 @@ public class CommandHandler implements IMessageHandler<Command, IMessage> {
 	WorldServer world = DimensionManager.getWorld(message.dimension);
 	if (world != null) {
 	    TileEntity entity = world.getTileEntity(message.x, message.y, message.z);
-	    if ((entity != null) && (entity instanceof ICommand)) {
-		((ICommand) entity).executeCommand((World) world, message.x, message.y, message.z, message.command);
+	    if ((entity != null) && (entity instanceof ICommandReceiver)) {
+		((ICommandReceiver) entity).executeCommand((World) world, message.x, message.y, message.z, message.command);
 	    }
 	}
 	return null; // no response in this case
