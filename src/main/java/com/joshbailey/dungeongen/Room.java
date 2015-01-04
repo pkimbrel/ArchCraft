@@ -40,6 +40,11 @@ public class Room {
 	 *           Value n = room occupies n squares along the Y axis.
 	 */
 	private int size_y;
+	
+	/**
+	 * The collection of spaces in the dungeon occupied by this room.
+	 */
+	private Space[][] spaces;
 
 	//<><><><><><><><><><>
 	//Derived parameters
@@ -86,6 +91,24 @@ public class Room {
 		this.startingLocation = startingLocation;
 		this.size_x = size_x;
 		this.size_y = size_y;
+	}
+	
+	/**
+	 * Intended to be called after the Dungeon decides this Room may be added to the Dungeon.
+	 * This would traditionally belong in the constructor, but because it mutates objects which are not
+	 * part of its own scope (i.e., the 'Spaces' really belong to the Dungeon), this method is provided seperately.
+	 * This way, you can create a Room to check if the Room "fits" without also mutating the actual Dungeon.
+	 */
+	public void informOfDungeonMembership(Space[][] parentDungeonSpaces){
+		this.spaces = Space.manufacture2dSpaceArray(this.getBottomLeftCoordinate().getX(),
+											    this.getBottomLeftCoordinate().getY(),
+											    size_x,
+											    size_y);
+		for(int x = this.getBottomLeftCoordinate().getX() ; x < this.getTopRightCoordinate().getX() ; x++){
+			for(int y = this.getBottomLeftCoordinate().getY() ; y < this.getTopRightCoordinate().getY() ; y++){
+				parentDungeonSpaces[x][y].setPassable(true);
+			}
+		}
 	}
 	
 	public TwoDimensionalCoordinate getStartingLocation() {return startingLocation;}
@@ -171,7 +194,5 @@ public class Room {
 		return "Room [startingLocation=" + startingLocation + ", size_x="
 				+ size_x + ", size_y=" + size_y + "]";
 	}
-	
-	
 	
 }

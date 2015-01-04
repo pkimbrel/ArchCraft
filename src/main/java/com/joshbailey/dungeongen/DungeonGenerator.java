@@ -27,21 +27,14 @@ public class DungeonGenerator {
 	final int MAX_ROOM_SIZE_X = 13;
 	final int MAX_ROOM_SIZE_Y = 13;
 
-	Dungeon dungeon = new Dungeon(new TwoDimensionalCoordinate(DUNGEON_SIZE_X, DUNGEON_SIZE_Y));
-	int consecutiveFailedPlacements = 0;
-	do {
-	    Room newRoom = new Room(new TwoDimensionalCoordinate(randInt(0, DUNGEON_SIZE_X), randInt(0, DUNGEON_SIZE_Y)),
-		    randInt(MIN_ROOM_SIZE_X, MAX_ROOM_SIZE_X),
-		    randInt(MIN_ROOM_SIZE_Y, MAX_ROOM_SIZE_Y));
-	    if (dungeon.ableToAccomodateNewRoom(newRoom)) {
-		dungeon.getRooms().add(newRoom);
-		consecutiveFailedPlacements = 0;
-	    } else {
-		consecutiveFailedPlacements++;
-	    }
-	} while (consecutiveFailedPlacements < 5000);
+	Dungeon dungeon = new Dungeon(new TwoDimensionalCoordinate(DUNGEON_SIZE_X, DUNGEON_SIZE_Y), 
+			  MIN_ROOM_SIZE_X, 
+			  MAX_ROOM_SIZE_X, 
+			  MIN_ROOM_SIZE_Y, 
+			  MAX_ROOM_SIZE_Y, 
+			  5000);
 
-	return dungeon.toString();
+		return dungeon.toString();
     }
 
     private static int randInt(int min, int max) {
