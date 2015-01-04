@@ -110,9 +110,9 @@ public class BuilderEntity extends BaseTileEntity implements IInventory, IComman
     }
 
     public void addLasers() {
-	System.out.println("Adding lasers");
 	laser = new LaserEntity(getWorldObj(), xCoord, yCoord, zCoord);
 	getWorldObj().spawnEntityInWorld(laser);
+	laser.setSize(Math.max(width, depth), height);
     }
 
     public void removeLasers() {
@@ -121,7 +121,6 @@ public class BuilderEntity extends BaseTileEntity implements IInventory, IComman
 
     @Override
     public void executeCommand(World world, int x, int y, int z, String command) {
-	System.out.println(command);
 	if (command.equals("testPattern1")) {
 	    buildTestPattern1(world, x, y, z);
 	} else if (command.equals("clearTestPattern1")) {
@@ -151,6 +150,8 @@ public class BuilderEntity extends BaseTileEntity implements IInventory, IComman
 		height++;
 	    }
 	}
+	
+	laser.setSize(Math.max(width, depth), height);
 	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord); 
 	markDirty();
     }
@@ -336,8 +337,6 @@ public class BuilderEntity extends BaseTileEntity implements IInventory, IComman
 	    width = dimensions[0];
 	    height = dimensions[1];
 	    depth = dimensions[2];
-	    System.out.println("Read width: " + width);
-
 	}
     }
 
@@ -360,7 +359,6 @@ public class BuilderEntity extends BaseTileEntity implements IInventory, IComman
     }
 
     public void writeSyncableDataToNBT(NBTTagCompound tagCompound) {
-	System.out.println("Writing width: " + width);
 	tagCompound.setIntArray("dimensions", new int[] { width, height, depth });
     }
 
