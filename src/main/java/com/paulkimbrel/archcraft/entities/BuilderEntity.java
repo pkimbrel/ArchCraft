@@ -1,8 +1,6 @@
 package com.paulkimbrel.archcraft.entities;
 
-import scala.collection.mutable.SetBuilder;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockStone;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -16,18 +14,11 @@ import net.minecraft.world.World;
 
 import com.joshbailey.dungeongen.DungeonGenerator;
 import com.paulkimbrel.archcraft.Main;
-import com.paulkimbrel.archcraft.core.BaseTileEntity;
-import com.paulkimbrel.archcraft.messaging.Command;
+import com.paulkimbrel.archcraft.core.SpatialTileEntity;
 import com.paulkimbrel.archcraft.messaging.ICommand;
 
-public class BuilderEntity extends BaseTileEntity implements IInventory, ICommand {
+public class BuilderEntity extends SpatialTileEntity implements IInventory, ICommand {
     private ItemStack[] inventory;
-
-    public int width = 9;
-    public int depth = 9;
-    public int height = 6;
-
-    public static final int MAX_SIZE = 64;
 
     public static String[][] testPattern1 = new String[][] {
 	    { "@@@@@@@@@",
@@ -98,7 +89,6 @@ public class BuilderEntity extends BaseTileEntity implements IInventory, IComman
 		    "*********" },
     };
 
-    public LaserEntity laser;
 
     public BuilderEntity() {
 	super();
@@ -107,19 +97,7 @@ public class BuilderEntity extends BaseTileEntity implements IInventory, IComman
 
     @Override
     protected void initialize() {
-	if (!worldObj.isRemote) {
-	    addLasers();
-	}
-    }
-
-    public void addLasers() {
-	laser = new LaserEntity(getWorldObj(), xCoord, yCoord, zCoord);
-	getWorldObj().spawnEntityInWorld(laser);
-	laser.setSize(Math.max(width, depth), height);
-    }
-
-    public void removeLasers() {
-	getWorldObj().removeEntity(laser);
+	super.initialize();
     }
 
     @Override

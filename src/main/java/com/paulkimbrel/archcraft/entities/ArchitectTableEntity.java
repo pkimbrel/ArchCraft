@@ -1,7 +1,8 @@
 package com.paulkimbrel.archcraft.entities;
 
-import net.minecraft.tileentity.TileEntity;
+import com.paulkimbrel.archcraft.core.SpatialTileEntity;
 
-public class ArchitectTableEntity extends TileEntity {
+public class ArchitectTableEntity extends SpatialTileEntity {
+
 
 }

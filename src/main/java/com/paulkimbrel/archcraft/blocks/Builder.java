@@ -126,11 +126,6 @@ public class Builder extends BlockContainer {
 	
 	dropItems(world, (IInventory)tileEntity, x, y, z);
 	
-	BuilderEntity builder = (BuilderEntity) tileEntity;
-	if (!world.isRemote) {
-	    builder.removeLasers();
-	}
-
 	super.breakBlock(world, x, y, z, block, mysteryParameter);
     }
 

@@ -1,9 +1,11 @@
 package com.paulkimbrel.archcraft.blocks;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -12,10 +14,14 @@ import net.minecraft.world.World;
 import com.paulkimbrel.archcraft.Compute;
 import com.paulkimbrel.archcraft.Main;
 import com.paulkimbrel.archcraft.entities.ArchitectTableEntity;
+import com.paulkimbrel.archcraft.entities.BuilderEntity;
+import com.paulkimbrel.archcraft.entities.LaserEntity;
 
 public class ArchitectTable extends BlockContainer {
 
     private IIcon icon;
+    
+    public LaserEntity laser;
 
     public ArchitectTable(String unlocalizedName, Material material) {
 	super(material);
@@ -75,4 +81,18 @@ public class ArchitectTable extends BlockContainer {
 
     }
 
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int mysteryParameter) {
+	TileEntity tileEntity = world.getTileEntity(x, y, z);
+	if (!(tileEntity instanceof ArchitectTableEntity)) {
+	    return;
+	}
+	
+	//ArchitectTableEntity builder = (ArchitectTableEntity) tileEntity;
+	//if (!world.isRemote) {
+	    //builder.removeLasers();
+	//}
+
+	super.breakBlock(world, x, y, z, block, mysteryParameter);
+    }
 }

@@ -9,6 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import com.paulkimbrel.archcraft.blocks.Builder;
+import com.paulkimbrel.archcraft.core.SpatialTileEntity;
 import com.paulkimbrel.archcraft.entities.BuilderEntity;
 import com.paulkimbrel.archcraft.entities.LaserEntity;
 
@@ -23,7 +24,7 @@ public class LaserRenderer extends Render {
 
 	LaserEntity laserEntity = (LaserEntity) entity;
 
-	BuilderEntity builderEntity = (BuilderEntity) entity.worldObj.getTileEntity(laserEntity.builderX, laserEntity.builderY, laserEntity.builderZ);
+	SpatialTileEntity builderEntity = (SpatialTileEntity) entity.worldObj.getTileEntity(laserEntity.builderX, laserEntity.builderY, laserEntity.builderZ);
 	if (laserEntity.show == false || builderEntity == null) {
 	    return;
 	}
