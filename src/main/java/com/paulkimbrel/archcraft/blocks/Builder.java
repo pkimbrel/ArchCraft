@@ -2,7 +2,6 @@ package com.paulkimbrel.archcraft.blocks;
 
 import java.util.Random;
 
-import sun.java2d.xr.DirtyRegion;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockDoor;
