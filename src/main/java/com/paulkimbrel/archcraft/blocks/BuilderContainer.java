@@ -1,6 +1,5 @@
 package com.paulkimbrel.archcraft.blocks;
 
-import com.paulkimbrel.archcraft.entities.BuilderEntity;
 import com.paulkimbrel.archcraft.messaging.Command;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;

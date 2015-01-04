@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 import com.paulkimbrel.archcraft.Main;
 import com.paulkimbrel.archcraft.blocks.Builder;
 import com.paulkimbrel.archcraft.blocks.BuilderContainer;
-import com.paulkimbrel.archcraft.entities.BuilderEntity;
+import com.paulkimbrel.archcraft.blocks.BuilderEntity;
 import com.paulkimbrel.archcraft.gui.BuilderGUI;
 
 import cpw.mods.fml.common.network.IGuiHandler;

@@ -18,7 +18,6 @@ import net.minecraft.world.World;
 
 import com.paulkimbrel.archcraft.Compute;
 import com.paulkimbrel.archcraft.Main;
-import com.paulkimbrel.archcraft.entities.BuilderEntity;
 
 public class Builder extends BlockContainer {
     public IIcon[] icons = new IIcon[6];
