@@ -1,6 +1,8 @@
 package com.paulkimbrel.archcraft.entities;
 
+import scala.collection.mutable.SetBuilder;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockStone;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -12,6 +14,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.world.World;
 
+import com.joshbailey.dungeongen.DungeonGenerator;
 import com.paulkimbrel.archcraft.Main;
 import com.paulkimbrel.archcraft.core.BaseTileEntity;
 import com.paulkimbrel.archcraft.messaging.Command;
@@ -125,6 +128,8 @@ public class BuilderEntity extends BaseTileEntity implements IInventory, IComman
 	    buildTestPattern1(world, x, y, z);
 	} else if (command.equals("clearTestPattern1")) {
 	    clearTestPattern1(world, x, y, z);
+	} else if (command.equals("testDungeon1")) {
+	    buildTestDungeon1(world, x, y, z);
 	} else if (command.equals("widthDown")) {
 	    if (width > 1) {
 		width--;
@@ -150,16 +155,16 @@ public class BuilderEntity extends BaseTileEntity implements IInventory, IComman
 		height++;
 	    }
 	}
-	
+
 	laser.setSize(Math.max(width, depth), height);
-	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord); 
+	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	markDirty();
     }
 
     private void clearTestPattern1(World world, int x, int y, int z) {
 	int direction = world.getBlockMetadata(x, y, z);
 
-	for (int py = 0; py < height+1; py++) {
+	for (int py = 0; py < height + 1; py++) {
 	    for (int pz = 0; pz < width; pz++) {
 		for (int px = 0; px < depth; px++) {
 		    Block block;
@@ -178,6 +183,60 @@ public class BuilderEntity extends BaseTileEntity implements IInventory, IComman
 		    } else {
 			world.setBlock(x + pz, y + py - 1, z - px - 1, block);
 		    }
+		}
+	    }
+	}
+    }
+
+    private void buildTestDungeon1(World world, int x, int y, int z) {
+	int direction = world.getBlockMetadata(x, y, z);
+
+	String dungeon = DungeonGenerator.generateDungeon();
+	String[] lines = dungeon.split("\n");
+
+	int height = 7;
+
+	System.out.println(lines.length);
+	System.out.println(lines[0].length());
+	for (int pz = 0; pz < lines.length; pz++) {
+	    String row = lines[pz];
+	    for (int px = 0; px < row.length(); px++) {
+		char blockIndicator = row.charAt(px);
+		Block floor = Blocks.stone;
+		Block ceiling = Blocks.planks;
+		Block walls = Blocks.cobblestone;
+		Block air = Blocks.air;
+		if (blockIndicator == ' ') {
+		    walls = air;
+		}
+		for (int py = -1; py < height; py++) {
+		    Block block;
+		    if (py < 0) {
+			block = floor;
+		    } else if (py == height - 1) {
+			block = ceiling;
+		    } else {
+			block = walls;
+		    }
+		    int bx, by, bz;
+		    if (direction == Main.META_EAST) {
+			bx = x + 1 + px;
+			by = y + py;
+			bz = z + pz;
+		    } else if (direction == Main.META_SOUTH) {
+			bx = x - pz;
+			by = y + py;
+			bz = z + px + 1;
+		    } else if (direction == Main.META_WEST) {
+			bx = x - px - 1;
+			by = y + py;
+			bz = z - pz;
+		    } else {
+			bx = x + pz;
+			by = y + py;
+			bz = z - px - 1;
+		    }
+		    world.setBlock(bx, by, bz, block);
 		}
 	    }
 	}

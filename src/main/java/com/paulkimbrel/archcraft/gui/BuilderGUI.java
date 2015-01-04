@@ -33,14 +33,15 @@ public class BuilderGUI extends GuiContainer {
 	super.initGui();
 	rootX = (width - xSize) / 2;
 	rootY = (height - ySize) / 2;
-	buttonList.add(new GuiButton(1, rootX + 12, rootY + 23, 40, 20, "Test"));
-	buttonList.add(new GuiButton(2, rootX + 12, rootY + 42, 40, 20, "Clear"));
-	buttonList.add(new GuiButton(3, rootX + xSize - 51, rootY + 14, 20, 20, "-"));
-	buttonList.add(new GuiButton(4, rootX + xSize - 32, rootY + 14, 20, 20, "+"));
-	buttonList.add(new GuiButton(5, rootX + xSize - 51, rootY + 33, 20, 20, "-"));
-	buttonList.add(new GuiButton(6, rootX + xSize - 32, rootY + 33, 20, 20, "+"));
-	buttonList.add(new GuiButton(7, rootX + xSize - 51, rootY + 52, 20, 20, "-"));
-	buttonList.add(new GuiButton(8, rootX + xSize - 32, rootY + 52, 20, 20, "+"));
+	buttonList.add(new GuiButton(1, rootX + 12, rootY + 14, 40, 20, "Test"));
+	buttonList.add(new GuiButton(2, rootX + 12, rootY + 33, 50, 20, "Dungeon"));
+	buttonList.add(new GuiButton(3, rootX + 12, rootY + 52, 40, 20, "Clear"));
+	buttonList.add(new GuiButton(11, rootX + xSize - 51, rootY + 14, 20, 20, "-"));
+	buttonList.add(new GuiButton(12, rootX + xSize - 32, rootY + 14, 20, 20, "+"));
+	buttonList.add(new GuiButton(13, rootX + xSize - 51, rootY + 33, 20, 20, "-"));
+	buttonList.add(new GuiButton(14, rootX + xSize - 32, rootY + 33, 20, 20, "+"));
+	buttonList.add(new GuiButton(15, rootX + xSize - 51, rootY + 52, 20, 20, "-"));
+	buttonList.add(new GuiButton(16, rootX + xSize - 32, rootY + 52, 20, 20, "+"));
     }
 
     @Override
@@ -51,24 +52,27 @@ public class BuilderGUI extends GuiContainer {
 		command = "testPattern1";
 		break;
 	    case 2:
-		command = "clearTestPattern1";
+		command = "testDungeon1";
 		break;
 	    case 3:
+		command = "clearTestPattern1";
+		break;
+	    case 11:
 		command = "widthDown";
 		break;
-	    case 4:
+	    case 12:
 		command = "widthUp";
 		break;
-	    case 5:
+	    case 13:
 		command = "heightDown";
 		break;
-	    case 6:
+	    case 14:
 		command = "heightUp";
 		break;
-	    case 7:
+	    case 15:
 		command = "depthDown";
 		break;
-	    case 8:
+	    case 16:
 		command = "depthUp";
 		break;
 	}
