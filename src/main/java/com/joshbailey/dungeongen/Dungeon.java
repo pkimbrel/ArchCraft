@@ -66,9 +66,9 @@ public class Dungeon {
 	    return false;
 	if (candidateNewRoom.getBottomLeftCoordinate().getY() == 0) // Check bottom border
 	    return false;
-	if (candidateNewRoom.getTopRightCoordinate().getY() >= this.upperRightCorner.getY()) // Check top border
+	if (candidateNewRoom.getTopRightCoordinate().getY() >= this.upperRightCorner.getY()-1) // Check top border
 	    return false;
-	if (candidateNewRoom.getTopRightCoordinate().getX() >= this.upperRightCorner.getX()) // Check right border
+	if (candidateNewRoom.getTopRightCoordinate().getX() >= this.upperRightCorner.getX()-1) // Check right border
 	    return false;
 
 	for (Room room : rooms) {

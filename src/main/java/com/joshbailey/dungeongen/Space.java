@@ -60,7 +60,7 @@ public class Space {
 
 	@Override
 	public String toString() {
-		return passable ? " " : "@";
+		return "@";
 	}
 
 	@Override

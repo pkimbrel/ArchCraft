@@ -1,10 +1,7 @@
 package com.joshbailey.dungeongen;
 
-import java.util.Random;
 
 public class DungeonTestHarness {
-
-    private static Random rand = new Random();
 
     public static void main(String[] arg) {
 	/*

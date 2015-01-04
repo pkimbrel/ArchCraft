@@ -155,8 +155,15 @@ public class BuilderEntity extends SpatialTileEntity implements IInventory {
 		Block ceiling = Blocks.glowstone;
 		Block walls = Blocks.cobblestone;
 		Block air = Blocks.air;
+		Block glass = Blocks.glass;
 		if (blockIndicator == ' ') {
 		    walls = air;
+		}
+		if(blockIndicator == '#'){
+			walls = glass;
+		}
+		if(blockIndicator == '@'){ //Temporary switch: '@' should really be solid, but this makes it easy to see the rooms
+			walls = air;
 		}
 		for (int py = -1; py < height; py++) {
 		    Block block;

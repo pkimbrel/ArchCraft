@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import com.joshbailey.dungeongen.RoomSpace.RoomSpaceType;
+
 /**
  * Represents a room in a dungeon.
  * @author jshwa86
@@ -78,10 +80,10 @@ public class Room {
 		
 		if(startingLocation == null) 
 			throw new IllegalArgumentException("Cannot create Room with null startingLocation");
-		if(size_x < 1) 
-			throw new IllegalArgumentException("Cannot create Room with size_x less than 1");
-		if(size_y < 1) 
-			throw new IllegalArgumentException("Cannot create Room with size_y less than 1");
+		if(size_x < 3) 
+			throw new IllegalArgumentException("Cannot create Room with size_x less than 3");
+		if(size_y < 3) 
+			throw new IllegalArgumentException("Cannot create Room with size_y less than 3");
 		
 		this.startingLocation = startingLocation;
 		this.size_x = size_x;
@@ -96,12 +98,21 @@ public class Room {
 	 */
 	public void informOfDungeonMembership(Dungeon parentDungeon){
 		
+		//Mark passable rooms as passable (by converting them to a RoomSpace)
 		for(int x = this.getBottomLeftCoordinate().getX() ; x < this.getTopRightCoordinate().getX() ; x++){
 			for(int y = this.getBottomLeftCoordinate().getY() ; y < this.getTopRightCoordinate().getY() ; y++){
-				RoomSpace roomSpace = new RoomSpace(parentDungeon.getSpaces()[x][y],this);
+				RoomSpace roomSpace = new RoomSpace(parentDungeon.getSpaces()[x][y],this,RoomSpaceType.OPEN_AREA);
 				parentDungeon.getSpaces()[x][y] = roomSpace; 
 			}
 		}
+		
+		//Mark the walls of the room
+		Collection<TwoDimensionalCoordinate> wallCoordinates = this.outerRing();
+		for(TwoDimensionalCoordinate wallCoordinate : wallCoordinates){
+			RoomSpace roomSpace = new RoomSpace(parentDungeon.getSpaces()[wallCoordinate.getX()][wallCoordinate.getY()],this,RoomSpaceType.WALL);
+			parentDungeon.getSpaces()[wallCoordinate.getX()][wallCoordinate.getY()] = roomSpace; 
+		}
+		
 	}
 	
 	public TwoDimensionalCoordinate getStartingLocation() {return startingLocation;}
@@ -121,26 +132,7 @@ public class Room {
 	 * Else, false.
 	 */
 	public boolean separateFrom(Room otherRoom){
-	  return Collections.disjoint(this.outerRing(), otherRoom.outerRing());
-	}
-	
-	/**
-	 * Returns true if this room occupies the provided coordinate.
-	 * @param coordinate The coordinate in question.
-	 * @return True if this room occupies the given coordinate. Else false.
-	 */
-	public boolean occupies(TwoDimensionalCoordinate coordinate){
-		
-		if(this.getBottomLeftCoordinate().getX() <= coordinate.getX()
-			&&
-		   this.getBottomLeftCoordinate().getY() <= coordinate.getY()
-		    &&
-		   this.getTopRightCoordinate().getX() >= coordinate.getX()
-		    &&
-		   this.getTopLeftCoordinate().getY() >= coordinate.getY()){
-			return true;
-		}
-		return false;
+		return Collections.disjoint(this.occupiedCoordinates(), otherRoom.occupiedCoordinates());
 	}
 	
 	/**
@@ -163,23 +155,30 @@ public class Room {
 	 * 
 	 * @return
 	 */
-	public Collection<TwoDimensionalCoordinate> outerRing(){
+	private Collection<TwoDimensionalCoordinate> outerRing(){
 		Collection<TwoDimensionalCoordinate> outerRing = new LinkedList<TwoDimensionalCoordinate>();
 		
-		outerRing.add(new TwoDimensionalCoordinate(this.getTopLeftCoordinate().getX()-1, this.getTopLeftCoordinate().getY()+1)); //Top left corner
-		outerRing.add(new TwoDimensionalCoordinate(this.getTopRightCoordinate().getX()+1, this.getTopRightCoordinate().getY()+1)); //Top right corner
-		outerRing.add(new TwoDimensionalCoordinate(this.getBottomRightCoordinate().getX()-1, this.getBottomRightCoordinate().getY()-1)); //Bottom left corner
-		outerRing.add(new TwoDimensionalCoordinate(this.getBottomLeftCoordinate().getX()+1, this.getBottomLeftCoordinate().getY()-1)); //Bottom right corner
-		
 		for(int i = this.getTopLeftCoordinate().getX() ; i <= this.getTopRightCoordinate().getX() ; i++){ 
-			outerRing.add(new TwoDimensionalCoordinate(i, this.getTopLeftCoordinate().getY()+1)); //top wall
-			outerRing.add(new TwoDimensionalCoordinate(i, this.getBottomLeftCoordinate().getY()-1)); //bottom wall
+			outerRing.add(new TwoDimensionalCoordinate(i, this.getTopLeftCoordinate().getY())); //top wall
+			outerRing.add(new TwoDimensionalCoordinate(i, this.getBottomLeftCoordinate().getY())); //bottom wall
 		}
 		for(int i = this.getBottomRightCoordinate().getY() ; i <= this.getTopLeftCoordinate().getY() ; i++){
-			outerRing.add(new TwoDimensionalCoordinate(this.getTopLeftCoordinate().getX()-1, i)); //left wall
-			outerRing.add(new TwoDimensionalCoordinate(this.getTopRightCoordinate().getX()+1, i)); //right wall
+			outerRing.add(new TwoDimensionalCoordinate(this.getTopLeftCoordinate().getX(), i)); //left wall
+			outerRing.add(new TwoDimensionalCoordinate(this.getTopRightCoordinate().getX(), i)); //right wall
 		}
 		return outerRing;
+	}
+	
+	private Collection<TwoDimensionalCoordinate> occupiedCoordinates(){
+		Collection<TwoDimensionalCoordinate> occupiedCoordinates = new LinkedList<TwoDimensionalCoordinate>();
+		
+		for(int x = this.getTopLeftCoordinate().getX() ; x <= this.getTopRightCoordinate().getX() ; x++){
+			for(int y = this.getBottomRightCoordinate().getY() ; y <= this.getTopLeftCoordinate().getY() ; y++){
+				occupiedCoordinates.add(new TwoDimensionalCoordinate(x, y)); //top wall	
+			}
+		}
+		
+		return occupiedCoordinates;
 	}
 
 	@Override
