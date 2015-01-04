@@ -34,7 +34,7 @@ public class Dungeon {
     	
     	this.upperRightCorner = upperRightCorner;
 		rooms = new LinkedList<Room>();
-		spaces = Space.manufacture2dSpaceArray(0,0,upperRightCorner.getX(),upperRightCorner.getY());
+		spaces = Space.manufacture2dSpaceArray(0,0,upperRightCorner.getX(),upperRightCorner.getY(),this);
     	
     	int consecutiveFailedPlacements = 0;
     	do {
@@ -43,7 +43,7 @@ public class Dungeon {
 					    		    randInt(minRoomSizeY, maxRoomSizeY));
     	    if (this.ableToAccomodateNewRoom(newRoom)) {
 	    		this.getRooms().add(newRoom);
-	    		newRoom.informOfDungeonMembership(this.spaces);
+	    		newRoom.informOfDungeonMembership(this);
 	    		consecutiveFailedPlacements = 0;
     	    } else {
     	    	consecutiveFailedPlacements++;
@@ -55,6 +55,10 @@ public class Dungeon {
     public Collection<Room> getRooms() {
     	return rooms;
     }
+
+	public Space[][] getSpaces() {
+		return spaces;
+	}
 
 	private boolean ableToAccomodateNewRoom(Room candidateNewRoom) {
 	// Special case: room occupies the dungeon's perimeter (this is not allowed)

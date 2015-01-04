@@ -8,12 +8,11 @@ package com.joshbailey.dungeongen;
  */
 public class Space {
 	
-	
-	public static Space[][] manufacture2dSpaceArray(int startX, int startY, int sizeX, int sizeY){
+	public static Space[][] manufacture2dSpaceArray(int startX, int startY, int sizeX, int sizeY, Dungeon parentDungeon){
 		Space[][] spaces = new Space[sizeX][sizeY];
 		for(int x = startX ; x < sizeX ; x++){
 			for(int y = startY ; y < sizeY; y++){
-				spaces[x][y] = new Space(new TwoDimensionalCoordinate(x, y));
+				spaces[x][y] = new Space(new TwoDimensionalCoordinate(x, y),parentDungeon);
 			}
 		}
 		return spaces;
@@ -23,6 +22,8 @@ public class Space {
 	 * Represents where in the dungeon this Space is.
 	 */
 	private TwoDimensionalCoordinate coordinates;
+	
+	private Dungeon parentDungeon;
 
 	/**
 	 * True if this Space can be freely moved through.
@@ -30,11 +31,14 @@ public class Space {
 	 */
 	private boolean passable;
 
-	public Space(TwoDimensionalCoordinate coordinates) {
-		if(coordinates == null){
+	public Space(TwoDimensionalCoordinate coordinates, Dungeon parentDungeon) {
+		if(coordinates == null)
 			throw new IllegalArgumentException("Cannot create com.joshbailey.dungeongen.Space with null coordinates");
-		}
+		if(parentDungeon == null)
+			throw new IllegalArgumentException("Cannot create com.joshbailey.dungeongen.Space with null parentDungeon");
+
 		this.coordinates = coordinates;
+		this.parentDungeon = parentDungeon;
 		passable = false;
 	}
 
@@ -44,6 +48,14 @@ public class Space {
 
 	public void setPassable(boolean passable) {
 		this.passable = passable;
+	}
+
+	public TwoDimensionalCoordinate getCoordinates() {
+		return coordinates;
+	}
+
+	public Dungeon getParentDungeon() {
+		return parentDungeon;
 	}
 
 	@Override

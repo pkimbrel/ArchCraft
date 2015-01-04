@@ -40,11 +40,6 @@ public class Room {
 	 *           Value n = room occupies n squares along the Y axis.
 	 */
 	private int size_y;
-	
-	/**
-	 * The collection of spaces in the dungeon occupied by this room.
-	 */
-	private Space[][] spaces;
 
 	//<><><><><><><><><><>
 	//Derived parameters
@@ -99,14 +94,12 @@ public class Room {
 	 * part of its own scope (i.e., the 'Spaces' really belong to the Dungeon), this method is provided seperately.
 	 * This way, you can create a Room to check if the Room "fits" without also mutating the actual Dungeon.
 	 */
-	public void informOfDungeonMembership(Space[][] parentDungeonSpaces){
-		this.spaces = Space.manufacture2dSpaceArray(this.getBottomLeftCoordinate().getX(),
-											    this.getBottomLeftCoordinate().getY(),
-											    size_x,
-											    size_y);
+	public void informOfDungeonMembership(Dungeon parentDungeon){
+		
 		for(int x = this.getBottomLeftCoordinate().getX() ; x < this.getTopRightCoordinate().getX() ; x++){
 			for(int y = this.getBottomLeftCoordinate().getY() ; y < this.getTopRightCoordinate().getY() ; y++){
-				parentDungeonSpaces[x][y].setPassable(true);
+				RoomSpace roomSpace = new RoomSpace(parentDungeon.getSpaces()[x][y],this);
+				parentDungeon.getSpaces()[x][y] = roomSpace; 
 			}
 		}
 	}
