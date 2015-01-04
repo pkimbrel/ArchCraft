@@ -9,7 +9,7 @@
 
 
 
-package com.paulkimbrel.archcraft.model;
+package com.paulkimbrel.archcraft.renderer;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;

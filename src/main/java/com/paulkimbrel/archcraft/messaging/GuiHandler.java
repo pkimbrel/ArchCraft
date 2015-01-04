@@ -1,9 +1,10 @@
-package com.paulkimbrel.archcraft;
+package com.paulkimbrel.archcraft.messaging;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import com.paulkimbrel.archcraft.Main;
 import com.paulkimbrel.archcraft.blocks.Builder;
 import com.paulkimbrel.archcraft.blocks.BuilderContainer;
 import com.paulkimbrel.archcraft.entities.BuilderEntity;
@@ -12,8 +13,8 @@ import com.paulkimbrel.archcraft.gui.BuilderGUI;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
-public class AllGuis implements IGuiHandler {
-    public AllGuis() {
+public class GuiHandler implements IGuiHandler {
+    public GuiHandler() {
 	NetworkRegistry.INSTANCE.registerGuiHandler(Main.instance, this);
     }
 

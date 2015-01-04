@@ -38,7 +38,6 @@ public class LaserEntity extends Entity {
 	    // Auto Kill (we shant leave any lasers behind)
 	    isDead = true;
 	}
-	System.out.println("Client side create");
     }
 
     // Called by the server only.
@@ -50,14 +49,12 @@ public class LaserEntity extends Entity {
 	posX = x;
 	posY = y;
 	posZ = z;
-	System.out.println("Server side create");
     }
 
     @Override
     public void setSize(float width, float height) {
 	super.setSize(width, height);
 	if (!worldObj.isRemote) {
-	    System.out.println("Updating... " + width + "," + height );
 	    dataWatcher.updateObject(2, builderX);
 	    dataWatcher.updateObject(3, builderY);
 	    dataWatcher.updateObject(4, builderZ);
@@ -119,7 +116,6 @@ public class LaserEntity extends Entity {
 		return;
 	    }
 	    for (WatchableObject obj : changed) {
-		System.out.println("Change id: " + obj.getDataValueId());
 		switch (obj.getDataValueId()) {
 		    case 2:
 			builderX = ((Integer) obj.getObject()).intValue();
@@ -157,7 +153,6 @@ public class LaserEntity extends Entity {
 
     @Override
     public void setPosition(double x, double y, double z) {
-	System.out.println("New position: " + x + "," + y + "," + z);
 	super.setPosition(x, y, z);
     }
 

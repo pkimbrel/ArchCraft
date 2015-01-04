@@ -5,6 +5,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -62,7 +63,6 @@ public class ArchitectTable extends BlockContainer {
     @Override
     public void registerBlockIcons(IIconRegister reg) {
 	icon = reg.registerIcon("archcraft:architectTableIcon");
-	System.out.println(icon);
     }
 
     @Override
@@ -82,17 +82,21 @@ public class ArchitectTable extends BlockContainer {
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int mysteryParameter) {
+    public boolean onBlockActivated(World world,
+	    int x,
+	    int y,
+	    int z,
+	    EntityPlayer player,
+	    int side,
+	    float hitX,
+	    float hitY,
+	    float hitZ) {
 	TileEntity tileEntity = world.getTileEntity(x, y, z);
-	if (!(tileEntity instanceof ArchitectTableEntity)) {
-	    return;
+	if (tileEntity == null || player.isSneaking()) {
+	    return false;
+	} else {
+	    player.openGui(Main.instance, Main.GUI_ARCHITECTTABLE, world, x, y, z);
+	    return true;
 	}
-	
-	//ArchitectTableEntity builder = (ArchitectTableEntity) tileEntity;
-	//if (!world.isRemote) {
-	    //builder.removeLasers();
-	//}
-
-	super.breakBlock(world, x, y, z, block, mysteryParameter);
     }
 }

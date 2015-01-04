@@ -12,8 +12,6 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-import com.paulkimbrel.archcraft.model.ArchitectTableModel;
-
 public class ArchitectTableRenderer extends TileEntitySpecialRenderer {
 
     // The model of your block

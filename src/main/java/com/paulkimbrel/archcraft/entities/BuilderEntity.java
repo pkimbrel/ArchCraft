@@ -147,8 +147,6 @@ public class BuilderEntity extends SpatialTileEntity implements IInventory {
 
 	int height = 7;
 
-	System.out.println(lines.length);
-	System.out.println(lines[0].length());
 	for (int pz = 0; pz < lines.length; pz++) {
 	    String row = lines[pz];
 	    for (int px = 0; px < row.length(); px++) {

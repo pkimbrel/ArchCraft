@@ -1,12 +1,7 @@
 package com.paulkimbrel.archcraft;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.common.MinecraftForge;
-
-import org.lwjgl.opengl.GL11;
 
 import com.paulkimbrel.archcraft.messaging.Command;
 import com.paulkimbrel.archcraft.messaging.CommandHandler;
@@ -19,7 +14,6 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
@@ -35,8 +29,9 @@ public class Main {
     public static final String SERVER_PROXY = "com.paulkimbrel.archcraft.proxy.ServerProxy";
 
     public static final int GUI_BUILDER = 0;
+    public static final int GUI_ARCHITECTTABLE = 1;
     
-    public static final int MSG_BUILDER = 0;
+    public static final int MSG_COMMAND = 0;
 
     public static final int META_SOUTH = 0;
     public static final int META_WEST = 1;
@@ -65,7 +60,7 @@ public class Main {
 	proxy.preInit(event);
 	
 	network = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
-	network.registerMessage(CommandHandler.class, Command.class, Main.MSG_BUILDER, Side.SERVER);
+	network.registerMessage(CommandHandler.class, Command.class, Main.MSG_COMMAND, Side.SERVER);
     }
 
 
@@ -91,7 +86,7 @@ public class Main {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getTabIconItem() {
-	    return AllItems.squareAndCompass;
+	    return proxy.squareAndCompass;
 	}
     };
 
