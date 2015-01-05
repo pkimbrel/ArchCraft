@@ -8,7 +8,7 @@ import com.paulkimbrel.archcraft.blocks.architecttable.ArchitectTable;
 import com.paulkimbrel.archcraft.blocks.architecttable.ArchitectTableEntity;
 import com.paulkimbrel.archcraft.blocks.builder.Builder;
 import com.paulkimbrel.archcraft.blocks.builder.BuilderEntity;
-import com.paulkimbrel.archcraft.entities.LaserEntity;
+import com.paulkimbrel.archcraft.entities.laser.LaserEntity;
 import com.paulkimbrel.archcraft.items.SquareAndCompass;
 import com.paulkimbrel.archcraft.messaging.GuiHandler;
 

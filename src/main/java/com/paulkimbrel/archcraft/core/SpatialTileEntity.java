@@ -2,7 +2,7 @@ package com.paulkimbrel.archcraft.core;
 
 import net.minecraft.world.World;
 
-import com.paulkimbrel.archcraft.entities.LaserEntity;
+import com.paulkimbrel.archcraft.entities.laser.LaserEntity;
 import com.paulkimbrel.archcraft.messaging.ICommandReceiver;
 
 public class SpatialTileEntity extends BaseTileEntity implements ICommandReceiver {

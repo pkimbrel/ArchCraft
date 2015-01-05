@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 
 import com.paulkimbrel.archcraft.Compute;
 import com.paulkimbrel.archcraft.Main;
-import com.paulkimbrel.archcraft.entities.LaserEntity;
+import com.paulkimbrel.archcraft.entities.laser.LaserEntity;
 
 public class ArchitectTable extends BlockContainer {
 

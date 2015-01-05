@@ -1,4 +1,4 @@
-package com.paulkimbrel.archcraft.entities;
+package com.paulkimbrel.archcraft.entities.laser;
 
 import java.util.List;
 

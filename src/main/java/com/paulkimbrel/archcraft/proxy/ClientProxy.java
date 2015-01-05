@@ -2,8 +2,8 @@ package com.paulkimbrel.archcraft.proxy;
 
 import com.paulkimbrel.archcraft.blocks.architecttable.ArchitectTableEntity;
 import com.paulkimbrel.archcraft.blocks.architecttable.ArchitectTableRender;
-import com.paulkimbrel.archcraft.entities.LaserEntity;
-import com.paulkimbrel.archcraft.entities.LaserRenderer;
+import com.paulkimbrel.archcraft.entities.laser.LaserEntity;
+import com.paulkimbrel.archcraft.entities.laser.LaserRenderer;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
