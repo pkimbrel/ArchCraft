@@ -9,10 +9,10 @@ import net.minecraft.item.ItemStack;
 
 import com.paulkimbrel.archcraft.blocks.builder.BuilderEntity;
 
-public class BaseContainer extends Container {
+public class BaseGUIContainer extends Container {
     protected IInventory inventory;
 
-    public BaseContainer(InventoryPlayer player, IInventory inventory) {
+    public BaseGUIContainer(InventoryPlayer player, IInventory inventory) {
 	this.inventory = inventory;
 
 	// commonly used vanilla code that adds the player's inventory

@@ -23,7 +23,6 @@ public class CommonProxy {
 
     public static Block builder;
     public static Block architectTable;
-    public static Block laser;
 
     public void preInit(FMLPreInitializationEvent e) {
 	registerEntities();

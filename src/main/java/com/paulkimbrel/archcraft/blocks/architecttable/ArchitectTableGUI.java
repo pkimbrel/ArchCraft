@@ -21,9 +21,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ArchitectTableGUI extends GuiContainer {
     private int rootX;
     private int rootY;
-    private BuilderEntity tileEntity;
+    private ArchitectTableEntity tileEntity;
 
-    public ArchitectTableGUI(InventoryPlayer inventoryPlayer, BuilderEntity tileEntity) {
+    public ArchitectTableGUI(InventoryPlayer inventoryPlayer, ArchitectTableEntity tileEntity) {
 	super(new BuilderGUIContainer(inventoryPlayer, tileEntity));
 	this.tileEntity = tileEntity;
     }
