@@ -9,13 +9,13 @@
 
 
 
-package com.paulkimbrel.archcraft.renderer;
+package com.paulkimbrel.archcraft.architecttable;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
-public class ArchitectTableModel extends ModelBase
+public class ArchitectTableRenderModel extends ModelBase
 {
   //fields
     ModelRenderer Lower_Table;
@@ -33,7 +33,7 @@ public class ArchitectTableModel extends ModelBase
     ModelRenderer Back_Right_Table_Support;
     ModelRenderer Back_Left_Table_Support;
   
-  public ArchitectTableModel()
+  public ArchitectTableRenderModel()
   {
     textureWidth = 32;
     textureHeight = 32;

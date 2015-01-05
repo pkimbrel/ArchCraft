@@ -1,4 +1,4 @@
-package com.paulkimbrel.archcraft.blocks;
+package com.paulkimbrel.archcraft.architecttable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;

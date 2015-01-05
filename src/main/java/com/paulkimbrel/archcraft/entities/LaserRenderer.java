@@ -1,4 +1,4 @@
-package com.paulkimbrel.archcraft.renderer;
+package com.paulkimbrel.archcraft.entities;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
@@ -8,10 +8,9 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import com.paulkimbrel.archcraft.blocks.Builder;
-import com.paulkimbrel.archcraft.blocks.BuilderEntity;
+import com.paulkimbrel.archcraft.builder.Builder;
+import com.paulkimbrel.archcraft.builder.BuilderEntity;
 import com.paulkimbrel.archcraft.core.SpatialTileEntity;
-import com.paulkimbrel.archcraft.entities.LaserEntity;
 
 public class LaserRenderer extends Render {
     @Override

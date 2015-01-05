@@ -1,4 +1,4 @@
-package com.paulkimbrel.archcraft.renderer;
+package com.paulkimbrel.archcraft.architecttable;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -12,13 +12,13 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-public class ArchitectTableRenderer extends TileEntitySpecialRenderer {
+public class ArchitectTableRender extends TileEntitySpecialRenderer {
 
     // The model of your block
-    private final ArchitectTableModel model;
+    private final ArchitectTableRenderModel model;
 
-    public ArchitectTableRenderer() {
-	this.model = new ArchitectTableModel();
+    public ArchitectTableRender() {
+	this.model = new ArchitectTableRenderModel();
     }
 
     private void adjustRotatePivotViaMeta(World world, int x, int y, int z) {

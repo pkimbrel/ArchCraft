@@ -1,4 +1,4 @@
-package com.paulkimbrel.archcraft.blocks;
+package com.paulkimbrel.archcraft.builder;
 
 import com.paulkimbrel.archcraft.messaging.Command;
 
@@ -11,10 +11,10 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class BuilderContainer extends Container {
+public class BuilderGUIContainer extends Container {
     protected BuilderEntity builderEntity;
 
-    public BuilderContainer(InventoryPlayer player, BuilderEntity builderEntity) {
+    public BuilderGUIContainer(InventoryPlayer player, BuilderEntity builderEntity) {
 	this.builderEntity = builderEntity;
 
 	// the Slot constructor takes the IInventory and the slot number in that

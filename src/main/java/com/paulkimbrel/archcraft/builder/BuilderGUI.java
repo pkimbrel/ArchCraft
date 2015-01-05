@@ -1,17 +1,14 @@
-package com.paulkimbrel.archcraft.gui;
+package com.paulkimbrel.archcraft.builder;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.DimensionManager;
 
 import org.lwjgl.opengl.GL11;
 
 import com.paulkimbrel.archcraft.Main;
-import com.paulkimbrel.archcraft.blocks.BuilderContainer;
-import com.paulkimbrel.archcraft.blocks.BuilderEntity;
 import com.paulkimbrel.archcraft.messaging.Command;
 
 import cpw.mods.fml.relauncher.Side;
@@ -24,7 +21,7 @@ public class BuilderGUI extends GuiContainer {
     private BuilderEntity tileEntity;
 
     public BuilderGUI(InventoryPlayer inventoryPlayer, BuilderEntity tileEntity) {
-	super(new BuilderContainer(inventoryPlayer, tileEntity));
+	super(new BuilderGUIContainer(inventoryPlayer, tileEntity));
 	this.tileEntity = tileEntity;
     }
 

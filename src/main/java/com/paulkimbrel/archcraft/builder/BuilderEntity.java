@@ -1,4 +1,4 @@
-package com.paulkimbrel.archcraft.blocks;
+package com.paulkimbrel.archcraft.builder;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -213,7 +213,7 @@ public class BuilderEntity extends SpatialTileEntity implements IInventory {
 		    } else if (testPattern1[py][pz].charAt(px) == '#') {
 			block = Blocks.glass;
 		    } else if (testPattern1[py][pz].charAt(px) == '@') {
-			block = Blocks.gold_block;
+			block = Blocks.air;
 		    } else if (testPattern1[py][pz].charAt(px) == '!') {
 			block = Blocks.wooden_door;
 			metaData = 3;

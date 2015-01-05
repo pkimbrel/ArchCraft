@@ -4,10 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
 import com.paulkimbrel.archcraft.Main;
-import com.paulkimbrel.archcraft.blocks.ArchitectTable;
-import com.paulkimbrel.archcraft.blocks.ArchitectTableEntity;
-import com.paulkimbrel.archcraft.blocks.Builder;
-import com.paulkimbrel.archcraft.blocks.BuilderEntity;
+import com.paulkimbrel.archcraft.architecttable.ArchitectTable;
+import com.paulkimbrel.archcraft.architecttable.ArchitectTableEntity;
+import com.paulkimbrel.archcraft.builder.Builder;
+import com.paulkimbrel.archcraft.builder.BuilderEntity;
 import com.paulkimbrel.archcraft.entities.LaserEntity;
 import com.paulkimbrel.archcraft.items.SquareAndCompass;
 import com.paulkimbrel.archcraft.messaging.GuiHandler;
