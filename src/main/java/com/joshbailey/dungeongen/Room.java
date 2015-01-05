@@ -76,6 +76,59 @@ public class Room {
 		return bottomRightCoordinate;
 	}
 	
+	/**
+	 * Returns a collection of TwoDimensionalCoordinate points that represents the 'outer ring'
+	 * of this Room.
+	 * 
+	 * For ease of use, this method returns the outer ring of the Room's *walls*. This is intended to make
+	 * it easy to figure out the boundaries of the Room when comparing it to other things.
+	 * 
+	 * Example - For this Room:
+	 * @@@@
+	 * @..@
+	 * @@@@
+	 * 
+	 * Where: 
+	 * @ is a wall / solid space
+	 * . is open space
+	 * 
+	 * This method will return a collection that describes the solid space (the '@' symbols).
+	 * 
+	 * @return
+	 */
+	private Collection<TwoDimensionalCoordinate> outerRing = null;
+	private Collection<TwoDimensionalCoordinate> getOuterRing(){
+		if(outerRing==null){
+			outerRing = new LinkedList<TwoDimensionalCoordinate>();
+			
+			for(int i = this.getTopLeftCoordinate().getX() ; i <= this.getTopRightCoordinate().getX() ; i++){ 
+				outerRing.add(new TwoDimensionalCoordinate(i, this.getTopLeftCoordinate().getY())); //top wall
+				outerRing.add(new TwoDimensionalCoordinate(i, this.getBottomLeftCoordinate().getY())); //bottom wall
+			}
+			for(int i = this.getBottomRightCoordinate().getY() ; i <= this.getTopLeftCoordinate().getY() ; i++){
+				outerRing.add(new TwoDimensionalCoordinate(this.getTopLeftCoordinate().getX(), i)); //left wall
+				outerRing.add(new TwoDimensionalCoordinate(this.getTopRightCoordinate().getX(), i)); //right wall
+			}
+		}
+		return outerRing;
+	}
+	
+	private Collection<TwoDimensionalCoordinate> occupiedCoordinates = null;
+	private Collection<TwoDimensionalCoordinate> getOccupiedCoordinates(){
+		if(occupiedCoordinates == null){
+		
+			occupiedCoordinates = new LinkedList<TwoDimensionalCoordinate>();
+			
+			for(int x = this.getTopLeftCoordinate().getX() ; x <= this.getTopRightCoordinate().getX() ; x++){
+				for(int y = this.getBottomRightCoordinate().getY() ; y <= this.getTopLeftCoordinate().getY() ; y++){
+					occupiedCoordinates.add(new TwoDimensionalCoordinate(x, y)); //top wall	
+				}
+			}
+		}
+		
+		return occupiedCoordinates;
+	}
+	
 	public Room(TwoDimensionalCoordinate startingLocation, int size_x, int size_y) {
 		
 		if(startingLocation == null) 
@@ -107,7 +160,7 @@ public class Room {
 		}
 		
 		//Mark the walls of the room
-		Collection<TwoDimensionalCoordinate> wallCoordinates = this.outerRing();
+		Collection<TwoDimensionalCoordinate> wallCoordinates = this.getOuterRing();
 		for(TwoDimensionalCoordinate wallCoordinate : wallCoordinates){
 			RoomSpace roomSpace = new RoomSpace(parentDungeon.getSpaces()[wallCoordinate.getX()][wallCoordinate.getY()],this,RoomSpaceType.WALL);
 			parentDungeon.getSpaces()[wallCoordinate.getX()][wallCoordinate.getY()] = roomSpace; 
@@ -132,54 +185,9 @@ public class Room {
 	 * Else, false.
 	 */
 	public boolean separateFrom(Room otherRoom){
-		return Collections.disjoint(this.occupiedCoordinates(), otherRoom.occupiedCoordinates());
+		return Collections.disjoint(this.getOccupiedCoordinates(), otherRoom.getOccupiedCoordinates());
 	}
 	
-	/**
-	 * Returns a collection of TwoDimensionalCoordinate points that represents the 'outer ring'
-	 * of this Room.
-	 * 
-	 * For ease of use, this method returns the outer ring of the Room's *walls*. This is intended to make
-	 * it easy to figure out the boundaries of the Room when comparing it to other things.
-	 * 
-	 * Example - For this Room:
-	 * @@@@
-	 * @..@
-	 * @@@@
-	 * 
-	 * Where: 
-	 * @ is a wall / solid space
-	 * . is open space
-	 * 
-	 * This method will return a collection that describes the solid space (the '@' symbols).
-	 * 
-	 * @return
-	 */
-	private Collection<TwoDimensionalCoordinate> outerRing(){
-		Collection<TwoDimensionalCoordinate> outerRing = new LinkedList<TwoDimensionalCoordinate>();
-		
-		for(int i = this.getTopLeftCoordinate().getX() ; i <= this.getTopRightCoordinate().getX() ; i++){ 
-			outerRing.add(new TwoDimensionalCoordinate(i, this.getTopLeftCoordinate().getY())); //top wall
-			outerRing.add(new TwoDimensionalCoordinate(i, this.getBottomLeftCoordinate().getY())); //bottom wall
-		}
-		for(int i = this.getBottomRightCoordinate().getY() ; i <= this.getTopLeftCoordinate().getY() ; i++){
-			outerRing.add(new TwoDimensionalCoordinate(this.getTopLeftCoordinate().getX(), i)); //left wall
-			outerRing.add(new TwoDimensionalCoordinate(this.getTopRightCoordinate().getX(), i)); //right wall
-		}
-		return outerRing;
-	}
-	
-	private Collection<TwoDimensionalCoordinate> occupiedCoordinates(){
-		Collection<TwoDimensionalCoordinate> occupiedCoordinates = new LinkedList<TwoDimensionalCoordinate>();
-		
-		for(int x = this.getTopLeftCoordinate().getX() ; x <= this.getTopRightCoordinate().getX() ; x++){
-			for(int y = this.getBottomRightCoordinate().getY() ; y <= this.getTopLeftCoordinate().getY() ; y++){
-				occupiedCoordinates.add(new TwoDimensionalCoordinate(x, y)); //top wall	
-			}
-		}
-		
-		return occupiedCoordinates;
-	}
 
 	@Override
 	public String toString() {
