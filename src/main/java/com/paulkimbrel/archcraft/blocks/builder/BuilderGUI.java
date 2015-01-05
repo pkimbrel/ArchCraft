@@ -1,29 +1,26 @@
-package com.paulkimbrel.archcraft.architecttable;
+package com.paulkimbrel.archcraft.blocks.builder;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.DimensionManager;
 
 import org.lwjgl.opengl.GL11;
 
 import com.paulkimbrel.archcraft.Main;
-import com.paulkimbrel.archcraft.builder.BuilderGUIContainer;
-import com.paulkimbrel.archcraft.builder.BuilderEntity;
 import com.paulkimbrel.archcraft.messaging.Command;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ArchitectTableGUI extends GuiContainer {
+public class BuilderGUI extends GuiContainer {
     private int rootX;
     private int rootY;
     private BuilderEntity tileEntity;
 
-    public ArchitectTableGUI(InventoryPlayer inventoryPlayer, BuilderEntity tileEntity) {
+    public BuilderGUI(InventoryPlayer inventoryPlayer, BuilderEntity tileEntity) {
 	super(new BuilderGUIContainer(inventoryPlayer, tileEntity));
 	this.tileEntity = tileEntity;
     }

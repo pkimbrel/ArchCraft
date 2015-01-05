@@ -1,4 +1,4 @@
-package com.paulkimbrel.archcraft.architecttable;
+package com.paulkimbrel.archcraft.blocks.architecttable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

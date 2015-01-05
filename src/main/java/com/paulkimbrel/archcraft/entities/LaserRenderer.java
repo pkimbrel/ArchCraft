@@ -8,8 +8,8 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import com.paulkimbrel.archcraft.builder.Builder;
-import com.paulkimbrel.archcraft.builder.BuilderEntity;
+import com.paulkimbrel.archcraft.blocks.builder.Builder;
+import com.paulkimbrel.archcraft.blocks.builder.BuilderEntity;
 import com.paulkimbrel.archcraft.core.SpatialTileEntity;
 
 public class LaserRenderer extends Render {

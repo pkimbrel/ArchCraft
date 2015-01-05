@@ -1,4 +1,4 @@
-package com.paulkimbrel.archcraft.builder;
+package com.paulkimbrel.archcraft.blocks.builder;
 
 import java.util.Random;
 

@@ -7,7 +7,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import com.paulkimbrel.archcraft.builder.BuilderEntity;
+import com.paulkimbrel.archcraft.blocks.builder.BuilderEntity;
 
 public class BaseContainer extends Container {
     protected IInventory inventory;

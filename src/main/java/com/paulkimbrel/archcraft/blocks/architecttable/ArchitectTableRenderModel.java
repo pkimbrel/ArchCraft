@@ -9,7 +9,7 @@
 
 
 
-package com.paulkimbrel.archcraft.architecttable;
+package com.paulkimbrel.archcraft.blocks.architecttable;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;

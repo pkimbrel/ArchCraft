@@ -1,7 +1,7 @@
 package com.paulkimbrel.archcraft.proxy;
 
-import com.paulkimbrel.archcraft.architecttable.ArchitectTableEntity;
-import com.paulkimbrel.archcraft.architecttable.ArchitectTableRender;
+import com.paulkimbrel.archcraft.blocks.architecttable.ArchitectTableEntity;
+import com.paulkimbrel.archcraft.blocks.architecttable.ArchitectTableRender;
 import com.paulkimbrel.archcraft.entities.LaserEntity;
 import com.paulkimbrel.archcraft.entities.LaserRenderer;
 
