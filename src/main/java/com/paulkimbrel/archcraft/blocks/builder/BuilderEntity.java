@@ -1,5 +1,7 @@
 package com.paulkimbrel.archcraft.blocks.builder;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -10,6 +12,8 @@ import com.paulkimbrel.archcraft.Main;
 import com.paulkimbrel.archcraft.core.SpatialInventoryTileEntity;
 
 public class BuilderEntity extends SpatialInventoryTileEntity {
+    private Random rand = new Random();
+    
     public static String[][] testPattern1 = new String[][] {
 	    { "@@@@@@@@@",
 		    "@@@@@@@@@",
@@ -137,24 +141,33 @@ public class BuilderEntity extends SpatialInventoryTileEntity {
 	    for (int px = 0; px < row.length(); px++) {
 		char blockIndicator = row.charAt(px);
 		Block floor = Blocks.stone;
-		Block ceiling = Blocks.glowstone;
-		Block walls = Blocks.cobblestone;
+		Block roomCeiling = Blocks.planks;
+		Block roomWalls = Blocks.mossy_cobblestone;
+		Block hallwayCeiling = Blocks.stonebrick;
+		Block hallwayWalls = Blocks.stonebrick;
 		Block air = Blocks.air;
-		if (blockIndicator == ' ') {
+		
+		Block walls = hallwayWalls;
+		
+		if ((blockIndicator == ' ') || (blockIndicator == '!') || (blockIndicator == '$')) {
 		    walls = air;
 		}
 		if(blockIndicator == '#'){
-			walls = Blocks.mossy_cobblestone;
+			walls = roomWalls;
 		}
 		if(blockIndicator == 'X'){
-			walls = Blocks.glass;
+			walls = Blocks.stone;
 		}
 		for (int py = -1; py < height; py++) {
 		    Block block;
-		    if (py < 0) {
+		    if ((blockIndicator == ' ') && py > 2) {
+			block = hallwayCeiling;
+		    } else if ((blockIndicator == '$') && py > 1) {
+			block = roomWalls;
+		    } else if (py < 0) {
 			block = floor;
 		    } else if (py == height - 1) {
-			block = ceiling;
+			block = roomCeiling;
 		    } else {
 			block = walls;
 		    }
@@ -176,7 +189,13 @@ public class BuilderEntity extends SpatialInventoryTileEntity {
 			by = y + py;
 			bz = z - px - 1;
 		    }
-		    world.setBlock(bx, by, bz, block);
+		    
+		    int meta = rand.nextInt(20);
+		    if (walls.equals(hallwayWalls) && meta < 3) {
+			world.setBlock(bx, by, bz, block, meta, 2);
+		    } else {
+			world.setBlock(bx, by, bz, block);
+		    }
 		}
 	    }
 	}

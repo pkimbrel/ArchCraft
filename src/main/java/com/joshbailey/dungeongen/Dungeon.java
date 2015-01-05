@@ -101,7 +101,7 @@ public class Dungeon {
 		for(Room room: rooms){
 			List<TwoDimensionalCoordinate> potentialDoorways = room.getCandidateDoorways(this);
 			TwoDimensionalCoordinate doorway = potentialDoorways.get(rand.nextInt((potentialDoorways.size())));
-			spaces[doorway.getX()][doorway.getY()] = new DungeonSpace(spaces[doorway.getX()][doorway.getY()],DungeonSpaceType.HALLWAY,this);
+			spaces[doorway.getX()][doorway.getY()] = new DungeonSpace(spaces[doorway.getX()][doorway.getY()],DungeonSpaceType.DOORWAY,this);
 		}
     }
     

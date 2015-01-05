@@ -27,7 +27,8 @@ public class RoomSpace extends Space {
 	}
 
 	public enum RoomSpaceType{
-		OPEN_AREA(" "),
+		OPEN_AREA("!"),
+		DOOR("$"),
 		WALL("#");
 		
 		private RoomSpaceType(String symbol){
