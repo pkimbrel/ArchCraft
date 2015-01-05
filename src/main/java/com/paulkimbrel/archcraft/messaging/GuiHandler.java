@@ -5,6 +5,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import com.paulkimbrel.archcraft.Main;
+import com.paulkimbrel.archcraft.blocks.architecttable.ArchitectTableEntity;
+import com.paulkimbrel.archcraft.blocks.architecttable.ArchitectTableGUI;
+import com.paulkimbrel.archcraft.blocks.architecttable.ArchitectTableGUIContainer;
 import com.paulkimbrel.archcraft.blocks.builder.Builder;
 import com.paulkimbrel.archcraft.blocks.builder.BuilderEntity;
 import com.paulkimbrel.archcraft.blocks.builder.BuilderGUI;
@@ -23,6 +26,8 @@ public class GuiHandler implements IGuiHandler {
 	TileEntity entity = world.getTileEntity(x, y, z);
 	if (entity instanceof BuilderEntity) {
 	    return new BuilderGUIContainer(player.inventory, (BuilderEntity) entity);
+	} else if (entity instanceof ArchitectTableEntity) {
+	    return new ArchitectTableGUIContainer(player.inventory, (ArchitectTableEntity) entity);
 	}
 
 	return null;
@@ -33,6 +38,8 @@ public class GuiHandler implements IGuiHandler {
 	TileEntity entity = world.getTileEntity(x, y, z);
 	if (entity instanceof BuilderEntity) {
 	    return new BuilderGUI(player.inventory, (BuilderEntity) entity);
+	} else if (entity instanceof ArchitectTableEntity) {
+	    return new ArchitectTableGUI(player.inventory, (ArchitectTableEntity) entity);
 	}
 
 	return null;

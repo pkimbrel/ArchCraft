@@ -24,7 +24,7 @@ public class ArchitectTableGUI extends GuiContainer {
     private ArchitectTableEntity tileEntity;
 
     public ArchitectTableGUI(InventoryPlayer inventoryPlayer, ArchitectTableEntity tileEntity) {
-	super(new BuilderGUIContainer(inventoryPlayer, tileEntity));
+	super(new ArchitectTableGUIContainer(inventoryPlayer, tileEntity));
 	this.tileEntity = tileEntity;
     }
 
@@ -33,9 +33,6 @@ public class ArchitectTableGUI extends GuiContainer {
 	super.initGui();
 	rootX = (width - xSize) / 2;
 	rootY = (height - ySize) / 2;
-	buttonList.add(new GuiButton(1, rootX + 12, rootY + 14, 40, 20, "Test"));
-	buttonList.add(new GuiButton(2, rootX + 12, rootY + 33, 50, 20, "Dungeon"));
-	buttonList.add(new GuiButton(3, rootX + 12, rootY + 52, 40, 20, "Clear"));
 	buttonList.add(new GuiButton(11, rootX + xSize - 51, rootY + 14, 20, 20, "-"));
 	buttonList.add(new GuiButton(12, rootX + xSize - 32, rootY + 14, 20, 20, "+"));
 	buttonList.add(new GuiButton(13, rootX + xSize - 51, rootY + 33, 20, 20, "-"));
@@ -48,15 +45,6 @@ public class ArchitectTableGUI extends GuiContainer {
     protected void actionPerformed(GuiButton button) {
 	String command = "";
 	switch (button.id) {
-	    case 1:
-		command = "testPattern1";
-		break;
-	    case 2:
-		command = "testDungeon1";
-		break;
-	    case 3:
-		command = "clearTestPattern1";
-		break;
 	    case 11:
 		command = "widthDown";
 		break;
@@ -89,7 +77,7 @@ public class ArchitectTableGUI extends GuiContainer {
     protected void drawGuiContainerForegroundLayer(int param1, int param2) {
 	// draw text and stuff here
 	// the parameters for drawString are: string, x, y, color
-	fontRendererObj.drawString(StatCollector.translateToLocal("tile.builder.name"), 8, 6, 4210752);
+	fontRendererObj.drawString(StatCollector.translateToLocal("tile.architecttable.name"), 8, 6, 4210752);
 	// draws "Inventory" or your regional equivalent
 	fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, 4210752);
     }
