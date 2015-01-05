@@ -3,6 +3,7 @@ package com.joshbailey.dungeongen;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 import com.joshbailey.dungeongen.RoomSpace.RoomSpaceType;
 
@@ -97,7 +98,7 @@ public class Room {
 	 * @return
 	 */
 	private Collection<TwoDimensionalCoordinate> outerRing = null;
-	private Collection<TwoDimensionalCoordinate> getOuterRing(){
+	public Collection<TwoDimensionalCoordinate> getOuterRing(){
 		if(outerRing==null){
 			outerRing = new LinkedList<TwoDimensionalCoordinate>();
 			
@@ -111,6 +112,48 @@ public class Room {
 			}
 		}
 		return outerRing;
+	}
+	
+	private Collection<TwoDimensionalCoordinate> outerRingPlusTwo = null;
+	public Collection<TwoDimensionalCoordinate> getOuterRingPlusTwo(){
+		if(outerRingPlusTwo==null){
+			outerRingPlusTwo = new LinkedList<TwoDimensionalCoordinate>();
+			
+			for(int i = this.getTopLeftCoordinate().getX() ; i <= this.getTopRightCoordinate().getX() ; i++){ 
+				outerRingPlusTwo.add(new TwoDimensionalCoordinate(i, this.getTopLeftCoordinate().getY()+2)); //top wall
+				outerRingPlusTwo.add(new TwoDimensionalCoordinate(i, this.getBottomLeftCoordinate().getY()-2)); //bottom wall
+			}
+			for(int i = this.getBottomRightCoordinate().getY() ; i <= this.getTopLeftCoordinate().getY() ; i++){
+				outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getTopLeftCoordinate().getX()-2, i)); //left wall
+				outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getTopRightCoordinate().getX()+2, i)); //right wall
+			}
+			
+			//The next part is pretty ugly - translating out the corners
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getTopRightCoordinate().getX()+2,this.getTopRightCoordinate().getY()+2));
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getTopRightCoordinate().getX()+2,this.getTopRightCoordinate().getY()+1));
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getTopRightCoordinate().getX()+2,this.getTopRightCoordinate().getY()));
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getTopRightCoordinate().getX()+1,this.getTopRightCoordinate().getY()+2));
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getTopRightCoordinate().getX(),this.getTopRightCoordinate().getY()+2));
+			
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getTopLeftCoordinate().getX()-2,this.getTopLeftCoordinate().getY()+2));
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getTopLeftCoordinate().getX()-2,this.getTopLeftCoordinate().getY()+1));
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getTopLeftCoordinate().getX()-2,this.getTopLeftCoordinate().getY()));
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getTopLeftCoordinate().getX()-1,this.getTopLeftCoordinate().getY()+2));
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getTopLeftCoordinate().getX(),this.getTopLeftCoordinate().getY()+2));
+			
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getBottomRightCoordinate().getX()+2,this.getBottomRightCoordinate().getY()-2));
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getBottomRightCoordinate().getX()+2,this.getBottomRightCoordinate().getY()-1));
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getBottomRightCoordinate().getX()+2,this.getBottomRightCoordinate().getY()));
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getBottomRightCoordinate().getX()+1,this.getBottomRightCoordinate().getY()-2));
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getBottomRightCoordinate().getX(),this.getBottomRightCoordinate().getY()-2));
+			
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getBottomLeftCoordinate().getX()-2,this.getBottomLeftCoordinate().getY()-2));
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getBottomLeftCoordinate().getX()-2,this.getBottomLeftCoordinate().getY()-1));
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getBottomLeftCoordinate().getX()-2,this.getBottomLeftCoordinate().getY()));
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getBottomLeftCoordinate().getX()-1,this.getBottomLeftCoordinate().getY()-2));
+			outerRingPlusTwo.add(new TwoDimensionalCoordinate(this.getBottomLeftCoordinate().getX(),this.getBottomLeftCoordinate().getY()-2));
+		}
+		return outerRingPlusTwo;
 	}
 	
 	private Collection<TwoDimensionalCoordinate> occupiedCoordinates = null;
@@ -180,12 +223,34 @@ public class Room {
 	 * @return true if there is no overlap. Overlap is defined as:
 	 * 1. One room contains the other room
 	 * 2. One room is accessible (i.e., you can walk from one room to the other)
+	 * 3. Within a radius of 2 spaces of each other (so that hallways have room to exist)
 	 * from the other.
 	 * 
 	 * Else, false.
 	 */
 	public boolean separateFrom(Room otherRoom){
-		return Collections.disjoint(this.getOccupiedCoordinates(), otherRoom.getOccupiedCoordinates());
+		return Collections.disjoint(this.getOccupiedCoordinates(), otherRoom.getOccupiedCoordinates()) &&
+			   Collections.disjoint(this.getOuterRingPlusTwo(), otherRoom.getOuterRingPlusTwo());
+	}
+	
+	public List<TwoDimensionalCoordinate> getCandidateDoorways(Dungeon parentDungeon){
+		Collection<TwoDimensionalCoordinate> potentialDoorways = this.getOuterRing();
+		List<TwoDimensionalCoordinate> filteredDoorways = new LinkedList<TwoDimensionalCoordinate>();
+		CardinalDirection[] directions = CardinalDirection.values();
+		for(TwoDimensionalCoordinate coord : potentialDoorways){
+			for(CardinalDirection direction:directions){
+				if(parentDungeon.getSpaces()[direction.relativeTo(coord).getX()][direction.relativeTo(coord).getY()] instanceof RoomSpace){
+					RoomSpace rs = (RoomSpace)parentDungeon.getSpaces()[direction.relativeTo(coord).getX()][direction.relativeTo(coord).getY()];
+					if(rs.getRoomSpaceType() == RoomSpaceType.OPEN_AREA &&
+					   parentDungeon.numberOfHallwaySpacesAdjacentToGivenCoordinate(coord) > 0){
+						filteredDoorways.add(coord);
+						break;
+					}
+				}
+			}
+		}
+		
+		return filteredDoorways;
 	}
 	
 

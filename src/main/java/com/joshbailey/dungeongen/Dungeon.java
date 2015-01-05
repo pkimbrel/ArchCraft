@@ -1,8 +1,13 @@
 package com.joshbailey.dungeongen;
 
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
+import java.util.Stack;
+
+import com.joshbailey.dungeongen.DungeonSpace.DungeonSpaceType;
 
 public class Dungeon {
 
@@ -35,6 +40,17 @@ public class Dungeon {
     	this.upperRightCorner = upperRightCorner;
 		rooms = new LinkedList<Room>();
 		spaces = Space.manufacture2dSpaceArray(0,0,upperRightCorner.getX(),upperRightCorner.getY(),this);
+		
+		//Mark the outer perimeter of the dungeon as the edge
+		for(int x = 0 ; x < this.upperRightCorner.getX() ; x++){ 
+			spaces[x][this.upperRightCorner.getY()-1] = new DungeonSpace(spaces[x][this.upperRightCorner.getY()-1],DungeonSpaceType.EDGE,this);//top wall
+			spaces[x][0] = new DungeonSpace(spaces[x][0],DungeonSpaceType.EDGE,this); //bottom wall
+		}
+		for(int y = 0 ; y < this.upperRightCorner.getY() ; y++){
+			spaces[0][y] = new DungeonSpace(spaces[0][y],DungeonSpaceType.EDGE,this); //left wall
+			spaces[this.upperRightCorner.getX()-1][y] = new DungeonSpace(spaces[this.upperRightCorner.getX()-1][y],DungeonSpaceType.EDGE,this); //right wall
+		}
+		
     	
     	int consecutiveFailedPlacements = 0;
     	do {
@@ -50,6 +66,70 @@ public class Dungeon {
     	    }
     	} while (consecutiveFailedPlacements < allowedConsecutiveFailedPlacements);
     	
+		
+		//carving path
+		
+		int midX = this.upperRightCorner.getX()/2;
+		int midY = this.upperRightCorner.getY()/2;
+		
+		Stack<DungeonSpace> hallwayStack = new Stack<DungeonSpace>();
+		LinkedHashSet<DungeonSpace> hallwaySet = new LinkedHashSet<DungeonSpace>();
+		
+		TwoDimensionalCoordinate currentCoordinate = new TwoDimensionalCoordinate(midX, midY);
+		createNewHallwaySpace(hallwayStack,hallwaySet,currentCoordinate);
+		
+		//Carve the entire thing
+		do{
+			DungeonSpace ds = hallwayStack.peek();
+			CardinalDirection[] availableDirections = ds.identifyDirectionsAvailableForCarvingHallway();
+			if(availableDirections.length > 0){
+				currentCoordinate = CardinalDirection.randomDirectionOfThese(availableDirections).relativeTo(ds.getCoordinates());
+				createNewHallwaySpace(hallwayStack,hallwaySet,currentCoordinate);
+			}else{
+				hallwayStack.pop();
+			}
+		}while(!hallwayStack.isEmpty());
+		
+		//Unwind as described by the unwindPercentage (optional: listed here for reference. Only use if you end up carving prior to room placement)
+//		double unwindPercentage = 0.8; //How much (as a percentage) of the carving to unwind
+//		List<DungeonSpace> hallwaySpaces = new LinkedList<DungeonSpace>(hallwaySet);
+//		for(int i = hallwaySet.size()-1 ; i > ((1 - unwindPercentage)* hallwaySet.size()) ; i--){
+//			spaces[hallwaySpaces.get(i).getCoordinates().getX()][hallwaySpaces.get(i).getCoordinates().getY()] = new Space(new TwoDimensionalCoordinate(hallwaySpaces.get(i).getCoordinates().getX(),hallwaySpaces.get(i).getCoordinates().getY()),this,false);
+//		}
+		
+		//Visit each room and carve out one of the walls. This makes it so each room is connected to the dungeon.
+		for(Room room: rooms){
+			List<TwoDimensionalCoordinate> potentialDoorways = room.getCandidateDoorways(this);
+			TwoDimensionalCoordinate doorway = potentialDoorways.get(rand.nextInt((potentialDoorways.size())));
+			spaces[doorway.getX()][doorway.getY()] = new DungeonSpace(spaces[doorway.getX()][doorway.getY()],DungeonSpaceType.HALLWAY,this);
+		}
+    }
+    
+    private void createNewHallwaySpace(Stack<DungeonSpace> hallwayStack,LinkedHashSet<DungeonSpace> hallwaySet, TwoDimensionalCoordinate location){
+    	spaces[location.getX()][location.getY()] = new DungeonSpace(spaces[location.getX()][location.getY()],DungeonSpaceType.HALLWAY,this);
+    	hallwayStack.push((DungeonSpace)spaces[location.getX()][location.getY()]);
+    	hallwaySet.add((DungeonSpace)spaces[location.getX()][location.getY()]);
+    }
+    
+    public int numberOfHallwaySpacesAdjacentToGivenCoordinate(TwoDimensionalCoordinate givenCoordinate){
+    	int result = 0;
+    	
+		for(CardinalDirection direction : CardinalDirection.values()){
+			if(isHallwaySpace(spaces[direction.relativeTo(givenCoordinate).getX()][direction.relativeTo(givenCoordinate).getY()])){
+				result++;
+			}
+		}
+    	
+    	return result;
+    }
+    
+    private boolean isHallwaySpace(Space space){
+    	if(space instanceof DungeonSpace){
+    		if((((DungeonSpace) space).getDungeonSpaceType()) == DungeonSpaceType.HALLWAY){
+    			return true;
+    		}
+    	}
+    	return false;
     }
 
     public Collection<Room> getRooms() {
@@ -62,14 +142,28 @@ public class Dungeon {
 
 	private boolean ableToAccomodateNewRoom(Room candidateNewRoom) {
 	// Special case: room occupies the dungeon's perimeter (this is not allowed)
-	if (candidateNewRoom.getBottomLeftCoordinate().getX() == 0) // Check left border
+	if (candidateNewRoom.getBottomLeftCoordinate().getX() < 2) // Check left border
 	    return false;
-	if (candidateNewRoom.getBottomLeftCoordinate().getY() == 0) // Check bottom border
+	if (candidateNewRoom.getBottomLeftCoordinate().getY() < 2) // Check bottom border
 	    return false;
-	if (candidateNewRoom.getTopRightCoordinate().getY() >= this.upperRightCorner.getY()-1) // Check top border
+	if (candidateNewRoom.getTopRightCoordinate().getY() > this.upperRightCorner.getY()-2) // Check top border
 	    return false;
-	if (candidateNewRoom.getTopRightCoordinate().getX() >= this.upperRightCorner.getX()-1) // Check right border
+	if (candidateNewRoom.getTopRightCoordinate().getX() > this.upperRightCorner.getX()-2) // Check right border
 	    return false;
+	
+	//TODO The follow checks are a 'shim' to make sure a special case is not encountered:
+	//Current hallway carving begins from the center of the dungeon.
+	//This happens after rooms are placed in the dungeon.
+	//This means there can be a problem if a room ends up right in the center of the dungeon.
+	//So, to prevent that, the following check is here.
+	//This should be temporary.. This check really won't work for dungeons that are too small.
+	//So be wary.
+	Room fakeRoomInTheMiddle = new Room(new TwoDimensionalCoordinate(( (this.upperRightCorner.getX()/2)-5), (this.upperRightCorner.getY()/2)-5),5,5);
+	if(!candidateNewRoom.separateFrom(fakeRoomInTheMiddle)){
+		return false;
+	}
+	
+	
 
 	for (Room room : rooms) {
 	    if (!room.separateFrom(candidateNewRoom)) {
@@ -90,7 +184,7 @@ public class Dungeon {
 	// in a world
 	for (int y = (spaces.length -1) ; y >= 0 ; y--) {
 	    for (int x = 0; x < spaces[y].length; x++) {
-	    	sb.append(spaces[y][x]);
+	    	sb.append(spaces[x][y]);
 	    }
 	    sb.append("\n");
 	}

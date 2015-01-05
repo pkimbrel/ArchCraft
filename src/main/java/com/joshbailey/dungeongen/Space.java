@@ -12,7 +12,7 @@ public class Space {
 		Space[][] spaces = new Space[sizeX][sizeY];
 		for(int x = startX ; x < sizeX ; x++){
 			for(int y = startY ; y < sizeY; y++){
-				spaces[x][y] = new Space(new TwoDimensionalCoordinate(x, y),parentDungeon);
+				spaces[x][y] = new Space(new TwoDimensionalCoordinate(x, y),parentDungeon,false);
 			}
 		}
 		return spaces;
@@ -31,7 +31,7 @@ public class Space {
 	 */
 	private boolean passable;
 
-	public Space(TwoDimensionalCoordinate coordinates, Dungeon parentDungeon) {
+	public Space(TwoDimensionalCoordinate coordinates, Dungeon parentDungeon, boolean passable) {
 		if(coordinates == null)
 			throw new IllegalArgumentException("Cannot create com.joshbailey.dungeongen.Space with null coordinates");
 		if(parentDungeon == null)
@@ -39,15 +39,11 @@ public class Space {
 
 		this.coordinates = coordinates;
 		this.parentDungeon = parentDungeon;
-		passable = false;
+		this.passable = passable;
 	}
 
 	public boolean isPassable() {
 		return passable;
-	}
-
-	public void setPassable(boolean passable) {
-		this.passable = passable;
 	}
 
 	public TwoDimensionalCoordinate getCoordinates() {

@@ -29,9 +29,8 @@ public class DungeonTestHarness {
 								  MAX_ROOM_SIZE_X, 
 								  MIN_ROOM_SIZE_Y, 
 								  MAX_ROOM_SIZE_Y, 
-								  5000);
+								  10000);
 	System.out.println(dungeon);
-
     }
 
 }

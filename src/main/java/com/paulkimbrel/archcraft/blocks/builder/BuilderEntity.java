@@ -8,7 +8,6 @@ import net.minecraft.world.World;
 import com.joshbailey.dungeongen.DungeonGenerator;
 import com.paulkimbrel.archcraft.Main;
 import com.paulkimbrel.archcraft.core.SpatialInventoryTileEntity;
-import com.paulkimbrel.archcraft.messaging.ICommandReceiver;
 
 public class BuilderEntity extends SpatialInventoryTileEntity {
     public static String[][] testPattern1 = new String[][] {
@@ -141,15 +140,14 @@ public class BuilderEntity extends SpatialInventoryTileEntity {
 		Block ceiling = Blocks.glowstone;
 		Block walls = Blocks.cobblestone;
 		Block air = Blocks.air;
-		Block glass = Blocks.glass;
 		if (blockIndicator == ' ') {
 		    walls = air;
 		}
 		if(blockIndicator == '#'){
-			walls = glass;
+			walls = Blocks.mossy_cobblestone;
 		}
-		if(blockIndicator == '@'){ //Temporary switch: '@' should really be solid, but this makes it easy to see the rooms
-			walls = air;
+		if(blockIndicator == 'X'){
+			walls = Blocks.glass;
 		}
 		for (int py = -1; py < height; py++) {
 		    Block block;
